@@ -1,17 +1,22 @@
 package main
 
 import (
-	"log"
+	log "log"
+	http "net/http"
 	os "os"
-	strconv "strconv"
+	"strconv"
 
-	config "github.com/heru-oktafian/scafold/config"
+	"github.com/heru-oktafian/scafold/config"
+	env "github.com/heru-oktafian/scafold/env"
 	utils "github.com/heru-oktafian/scafold/utils"
 )
 
 func main() {
 	// Initialize timezone
 	utils.InitTimezone()
+
+	// Load .env file
+	env.Load(".env")
 
 	// Load Secret Key from environment
 	JWTSecret := os.Getenv("JWT_SECRET_KEY")
@@ -34,11 +39,12 @@ func main() {
 	config.KoneksiRedis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PASSWORD"), redisDB)
 
 	// Get port from environment
-	serverPort := os.Getenv("SERVER_PORT")
+	serverPort := os.Getenv("PORT")
 
 	// Start the application
 	app := utils.App()
 
 	// Start listening on the specified port
-	app.Listen(":" + serverPort)
+	log.Fatal(http.ListenAndServe(":"+serverPort, app))
+	// fmt.Println(JWTSecret, serverPort)
 }

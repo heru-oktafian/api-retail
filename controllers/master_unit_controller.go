@@ -2,61 +2,63 @@ package controllers
 
 import (
 	"math"
-	"strconv"
 	"strings"
 
-	models "github.com/heru-oktafian/api-retail/models"
-	config "github.com/heru-oktafian/scafold/config"
-	framework "github.com/heru-oktafian/scafold/framework"
-	helpers "github.com/heru-oktafian/scafold/helpers"
-	middlewares "github.com/heru-oktafian/scafold/middlewares"
-	responses "github.com/heru-oktafian/scafold/responses"
+	"github.com/heru-oktafian/api-retail/models"
+	"github.com/heru-oktafian/scafold/config"
+	"github.com/heru-oktafian/scafold/framework"
+	"github.com/heru-oktafian/scafold/helpers"
+	"github.com/heru-oktafian/scafold/middlewares"
+	"github.com/heru-oktafian/scafold/responses"
 )
 
 // CreateUnit buat unit
 func CreateUnit(c *framework.Ctx) error {
-	branch_id, _ := middlewares.GetBranchID(c)
+	branch_id, _ := middlewares.GetBranchID(c.Request)
+
+	// Creating new unit using helpers
 	return helpers.CreateResource(c, config.DB, &models.Unit{}, branch_id, "UNT")
 }
 
 // UpdateUnit update unit
 func UpdateUnit(c *framework.Ctx) error {
-	id := c.Params("id")
+	id := c.Get("id")
 	// Updating unit using helpers
 	return helpers.UpdateResource(c, config.DB, &models.Unit{}, id)
 }
 
 // DeleteUnit hapus unit
 func DeleteUnit(c *framework.Ctx) error {
-	id := c.Params("id")
+	id := c.Get("id")
 	// Deleting unit using helpers
 	return helpers.DeleteResource(c, config.DB, &models.Unit{}, id)
 }
 
 // GetUnitByID tampilkan unit berdasarkan id
 func GetUnitByID(c *framework.Ctx) error {
-	id := c.Query("id", "")
-	if id == "" {
-		return responses.JSONResponse(c, framework.StatusBadRequest, "Parameter id wajib diisi", nil)
-	}
+	id := c.Get("id")
+	// Getting unit using helpers
 	return helpers.GetResource(c, config.DB, &models.Unit{}, id)
 }
 
 // GetAllUnit tampilkan semua unit
 func GetAllUnit(c *framework.Ctx) error {
 	// Ambil ID cabang
-	branch_id, _ := middlewares.GetBranchID(c)
+	branch_id, _ := middlewares.GetBranchID(c.Request)
 
-	// Ambil parameter dari query GET
-	pageParam := c.Query("page", "1")
-	search := strings.TrimSpace(c.Query("search", ""))
-
-	page := 1
-	if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
-		page = p
+	// Parsing body JSON ke struct
+	var body models.RequestBody
+	if err := c.BodyParser(&body); err != nil {
+		return responses.JSONResponse(c, framework.StatusBadRequest, "Body permintaan tidak valid", "Gagal mem-parsing body permintaan")
 	}
 
-	limit := 10 // Tetapkan batas data per halaman ke 10
+	// Validasi dan set default untuk halaman jika tidak valid
+	page := body.Page
+	if page < 1 {
+		page = 1
+	}
+	limit := 10                              // Tetapkan batas data per halaman ke 10
+	search := strings.TrimSpace(body.Search) // Ambil kata kunci pencarian dari body
 	offset := (page - 1) * limit
 
 	var Unit []models.AllUnit // Gunakan AllUnit untuk mengambil data unit tanpa branch_id
@@ -89,20 +91,26 @@ func GetAllUnit(c *framework.Ctx) error {
 
 // CmbUnit mendapatkan semua kategori unit
 func CmbUnit(c *framework.Ctx) error {
-	branch_id, _ := middlewares.GetBranchID(c)
-	search := strings.TrimSpace(c.Query("search", ""))
+	// Get branch id
+	branch_id, _ := middlewares.GetBranchID(c.Request)
+
+	// Parse query parameters for search
+	search := strings.TrimSpace(c.Query("search"))
 
 	var cmbUnits []models.UnitCombo
 
+	// Base query to get all unit categories
 	query := config.DB.Table("units").
 		Select("id as unit_id, name as unit_name").
 		Where("branch_id = ?", branch_id)
 
+	// If search parameter is provided, add a filter
 	if search != "" {
-		search = strings.ToLower(search)
+		search = strings.ToLower(search) // Convert search keyword to lowercase
 		query = query.Where("LOWER(name) LIKE ?", "%"+search+"%")
 	}
 
+	// Execute the query
 	if err := query.Find(&cmbUnits).Error; err != nil {
 		return responses.JSONResponse(c, framework.StatusInternalServerError, "Failed to get data", "Failed to get data")
 	}
