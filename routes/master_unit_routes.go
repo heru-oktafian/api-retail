@@ -15,12 +15,12 @@ func MasterUnitRoutes(app *framework.Fiber) {
 	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 
 	// Group routes that require authentication
-	unitAPI := app.Group("/api/units", middlewares.Protected(JWTSecret))
+	unitAPI := app.Group("/api/units")
 
-	unitAPI.Get("/", controllers.GetAllUnit,
+	unitAPI.Get("/", controllers.GetAllUnit, middlewares.Protected(JWTSecret),
 		middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator"))
 
-	unitAPI.Get("/:id", controllers.GetUnitByID,
+	unitAPI.Get("/:id", controllers.GetUnitByID, middlewares.Protected(JWTSecret),
 		middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator"))
 
 	unitAPI.Post("/", controllers.CreateUnit,
