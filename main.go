@@ -45,7 +45,7 @@ func main() {
 	app := framework.New()
 
 	app.Get("/coba", func(c *framework.Ctx) {
-		c.SendString(200, "Halo dari Fiber di port "+serverPort)
+		c.SendString(200, "Halo dari Framework heru di port "+serverPort)
 	})
 
 	// Start listening on the specified port
