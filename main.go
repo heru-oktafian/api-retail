@@ -5,6 +5,7 @@ import (
 	os "os"
 	"strconv"
 
+	routes "github.com/heru-oktafian/api-retail/routes"
 	config "github.com/heru-oktafian/scafold/config"
 	env "github.com/heru-oktafian/scafold/env"
 	framework "github.com/heru-oktafian/scafold/framework"
@@ -42,11 +43,10 @@ func main() {
 	serverPort := os.Getenv("PORT")
 
 	// Start the application
-	app := framework.New()
+	app := framework.NewApp()
 
-	app.Get("/coba", func(c *framework.Ctx) {
-		c.SendString(200, "Halo dari Framework heru di port "+serverPort)
-	})
+	// Register routes
+	routes.MasterUnitRoutes(app)
 
 	// Start listening on the specified port
 	log.Fatal(app.Listen(":" + serverPort))
