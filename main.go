@@ -2,12 +2,12 @@ package main
 
 import (
 	log "log"
-	http "net/http"
 	os "os"
 	"strconv"
 
-	"github.com/heru-oktafian/scafold/config"
+	config "github.com/heru-oktafian/scafold/config"
 	env "github.com/heru-oktafian/scafold/env"
+	framework "github.com/heru-oktafian/scafold/framework"
 	utils "github.com/heru-oktafian/scafold/utils"
 )
 
@@ -42,9 +42,8 @@ func main() {
 	serverPort := os.Getenv("PORT")
 
 	// Start the application
-	app := utils.App()
+	app := framework.New()
 
 	// Start listening on the specified port
-	log.Fatal(http.ListenAndServe(":"+serverPort, app))
-	// fmt.Println(JWTSecret, serverPort)
+	app.Listen(":" + serverPort)
 }
