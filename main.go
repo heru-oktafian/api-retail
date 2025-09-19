@@ -44,6 +44,10 @@ func main() {
 	// Start the application
 	app := framework.New()
 
+	app.Get("/coba", func(c *framework.Ctx) {
+		c.SendString(200, "Halo dari Fiber di port "+serverPort)
+	})
+
 	// Start listening on the specified port
 	log.Fatal(app.Listen(":" + serverPort))
 }
