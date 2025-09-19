@@ -6,10 +6,11 @@ import (
 	"github.com/heru-oktafian/api-retail/controllers"
 	"github.com/heru-oktafian/scafold/framework"
 	"github.com/heru-oktafian/scafold/middlewares"
+	"github.com/heru-oktafian/scafold/responses"
 )
 
 // MasterUnitRoutes mengatur rute-rute untuk resource unit
-func MasterUnitRoutes(app *framework.App) {
+func MasterUnitRoutes(app *framework.Fiber) {
 	// Load Secret Key from environment
 	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 
@@ -32,7 +33,6 @@ func MasterUnitRoutes(app *framework.App) {
 		middlewares.AuthorizeRole("superadmin", "administrator"))
 
 	unitAPI.Get("/coba", func(c *framework.Ctx) error {
-		c.SendString(200, "Halo dari Framework heru di port "+os.Getenv("PORT"))
-		return nil
+		return responses.JSONResponse(c, 200, "Coba endpoint hit", nil)
 	})
 }

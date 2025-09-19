@@ -11,8 +11,8 @@ github.com/go-redis/redis/v8 v8.11.5 h1:AcZZR7igkdvfVmQTPnu9WE37LRrO/YrBH5zWyjDC
 github.com/go-redis/redis/v8 v8.11.5/go.mod h1:gREzHqY1hg6oD9ngVRbLStwAWKhA0FEgq8Jd4h5lpwo=
 github.com/golang-jwt/jwt/v5 v5.3.0 h1:pv4AsKCKKZuqlgs5sUmn4x8UlGa0kEVt/puTpKx9vvo=
 github.com/golang-jwt/jwt/v5 v5.3.0/go.mod h1:fxCRLWMO43lRc8nhHWY6LGqRcf+1gQWArsqaEUEa5bE=
-github.com/heru-oktafian/scafold v1.0.9 h1:ZAP6OC3d9cbLex+F1OhNL7QZ9SOHzB13GTzN2fyep8A=
-github.com/heru-oktafian/scafold v1.0.9/go.mod h1:K1z/8UGmOqstLGiHQixwm4xEmeGOUnJbqJooOddtENg=
+github.com/heru-oktafian/scafold v1.0.11 h1:fSp+aV5V1wf4nB4mh4K74vZ4q6GEGI+FJexwIWhAqx4=
+github.com/heru-oktafian/scafold v1.0.11/go.mod h1:K1z/8UGmOqstLGiHQixwm4xEmeGOUnJbqJooOddtENg=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=
 github.com/jackc/pgpassfile v1.0.0/go.mod h1:CEx0iS5ambNFdcRtxPj5JhEz+xB6uRky5eyVu/W2HEg=
 github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 h1:iCEnooe7UlwOQYpKFhBabPMi4aNAfoODPEFNiAnClxo=

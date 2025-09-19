@@ -43,11 +43,11 @@ func main() {
 	serverPort := os.Getenv("PORT")
 
 	// Start the application
-	app := framework.NewApp()
+	app := framework.New()
 
 	// Register routes
 	routes.MasterUnitRoutes(app)
 
 	// Start listening on the specified port
-	log.Fatal(app.Listen(":" + serverPort))
+	app.Listen(":" + serverPort)
 }

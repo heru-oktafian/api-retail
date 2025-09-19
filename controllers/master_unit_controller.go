@@ -49,7 +49,8 @@ func GetAllUnit(c *framework.Ctx) error {
 	// Parsing body JSON ke struct
 	var body models.RequestBody
 	if err := c.BodyParser(&body); err != nil {
-		return responses.JSONResponse(c, framework.StatusBadRequest, "Body permintaan tidak valid", "Gagal mem-parsing body permintaan")
+		// return responses.JSONResponse(c, framework.StatusBadRequest, "Body permintaan tidak valid", "Gagal mem-parsing body permintaan")
+		return responses.BadRequest(c, "Body permintaan tidak valid", err)
 	}
 
 	// Validasi dan set default untuk halaman jika tidak valid
@@ -75,18 +76,19 @@ func GetAllUnit(c *framework.Ctx) error {
 
 	// Hitung total unit yang sesuai dengan filter
 	if err := query.Count(&total).Error; err != nil {
-		return responses.JSONResponse(c, framework.StatusInternalServerError, "Gagal mengambil data Unit", "Gagal menghitung jumlah Unit")
+		// return responses.JSONResponse(c, framework.StatusInternalServerError, "Gagal mengambil data Unit", "Gagal menghitung jumlah Unit")
+		return responses.InternalServerError(c, "Gagal mengambil data Unit", err)
 	}
 
 	// Ambil data dengan pagination
 	if err := query.Offset(offset).Limit(limit).Scan(&Unit).Error; err != nil {
-		return responses.JSONResponse(c, framework.StatusInternalServerError, "Gagal mengambil data Unit", "Gagal mengambil data Unit dari database")
+		return responses.InternalServerError(c, "Gagal mengambil data Unit", err)
 	}
 
 	// Hitung total halaman berdasarkan hasil filter
 	totalPages := int(math.Ceil(float64(total) / float64(limit)))
 
-	return responses.JSONResponseGetAll(c, framework.StatusOK, "Data Unit berhasil diambil", search, int(total), page, int(totalPages), int(limit), Unit)
+	return responses.JSONResponseGetAll(c, 200, "Data Unit berhasil diambil", search, int(total), page, int(totalPages), int(limit), Unit)
 }
 
 // CmbUnit mendapatkan semua kategori unit
@@ -112,8 +114,9 @@ func CmbUnit(c *framework.Ctx) error {
 
 	// Execute the query
 	if err := query.Find(&cmbUnits).Error; err != nil {
-		return responses.JSONResponse(c, framework.StatusInternalServerError, "Failed to get data", "Failed to get data")
+		// return responses.JSONResponse(c, framework.StatusInternalServerError, "Failed to get data", "Failed to get data")
+		return responses.InternalServerError(c, "Failed to get data", err)
 	}
 
-	return responses.JSONResponse(c, framework.StatusOK, "Data berhasil ditemukan", cmbUnits)
+	return responses.JSONResponse(c, 200, "Data berhasil ditemukan", cmbUnits)
 }
