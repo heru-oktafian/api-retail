@@ -36,7 +36,7 @@ func main() {
 	}
 
 	// Default to DB 0 if REDIS_DB is not set or invalid
-	config.KoneksiRedis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PASSWORD"), redisDB)
+	config.KoneksiRedis(os.Getenv("REDIS_ADDR"), os.Getenv("REDIS_PASSWORD"), redisDB)
 
 	// Get port from environment
 	serverPort := os.Getenv("PORT")
