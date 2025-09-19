@@ -45,5 +45,5 @@ func main() {
 	app := framework.New()
 
 	// Start listening on the specified port
-	app.Listen(":" + serverPort)
+	log.Fatal(app.Listen(":" + serverPort))
 }
