@@ -4,7 +4,7 @@ go 1.25.1
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
-	github.com/heru-oktafian/scafold v1.0.14
+	github.com/heru-oktafian/scafold v1.0.15
 	golang.org/x/crypto v0.41.0
 	gorm.io/gorm v1.25.10
 )

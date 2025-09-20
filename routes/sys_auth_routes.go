@@ -17,7 +17,7 @@ func SysAuthRoutes(app *framework.Fiber) {
 	// auth.Post("/register", controllers.RegisterUser)
 	auth.Post("/login", controllers.LoginUser)
 	auth.Post("/logout", controllers.Logout)
-	auth.Post("/set_branch", controllers.SetBranch)
+	auth.Post("/set_branch", middlewares.Protected(JWTSecret), controllers.SetBranch)
 	auth.Get("/profile", middlewares.Protected(JWTSecret), middlewares.AuthorizeRole("administrator", "superadmin"), controllers.GetProfile)
 	// auth.Get("/list_branches", middleware.Protected(), controllers.GetBranchByUserId)
 }
