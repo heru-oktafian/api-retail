@@ -20,9 +20,14 @@ func MasterUnitRoutes(app *framework.Fiber) {
 	unitAPI.Get("/", controllers.GetAllUnit)
 
 	// GET /api/units/:id -> ambil unit berdasarkan ID
-	unitAPI.Get("/:id", controllers.GetUnitByID, middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator"))
+	unitAPI.Get("/:id", controllers.GetUnitByID)
 
 	// POST /api/units -> buat unit baru
-	unitAPI.Post("/", controllers.CreateUnit)
+	unitAPI.Post("/", controllers.CreateUnit, middlewares.AuthorizeRole("superadmin", "administrator"))
 
+	// PUT /api/unites/:id - Memperbarui unit
+	unitAPI.Put("/:id", controllers.UpdateUnit, middlewares.AuthorizeRole("superadmin", "administrator"))
+
+	// DELETE /api/unites/:id - Menghapus unit (soft delete)
+	unitAPI.Delete("/:id", controllers.DeleteUnit, middlewares.AuthorizeRole("superadmin", "administrator"))
 }

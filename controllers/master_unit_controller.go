@@ -23,14 +23,14 @@ func CreateUnit(c *framework.Ctx) error {
 
 // UpdateUnit update unit
 func UpdateUnit(c *framework.Ctx) error {
-	id := c.Get("id")
+	id := c.Param("id")
 	// Updating unit using helpers
 	return helpers.UpdateResource(c, config.DB, &models.Unit{}, id)
 }
 
 // DeleteUnit hapus unit
 func DeleteUnit(c *framework.Ctx) error {
-	id := c.Get("id")
+	id := c.Param("id")
 	// Deleting unit using helpers
 	return helpers.DeleteResource(c, config.DB, &models.Unit{}, id)
 }
