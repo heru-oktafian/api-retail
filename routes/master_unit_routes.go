@@ -42,7 +42,7 @@ func MasterUnitRoutes(app *framework.Fiber) {
 	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 
 	// Grup rute yang dilindungi JWT
-	unitAPI := app.Group("/api/units")
+	unitAPI := app.Group("/api/units", middlewares.Protected(JWTSecret))
 
 	// GET /api/units -> ambil semua unit
 	unitAPI.Get("/", controllers.GetAllUnit)
@@ -51,15 +51,16 @@ func MasterUnitRoutes(app *framework.Fiber) {
 	unitAPI.Get("/:id", controllers.GetUnitByID)
 
 	// POST /api/units -> buat unit baru
-	unitAPI.Post("/", controllers.CreateUnit, middlewares.Protected(JWTSecret))
+	unitAPI.Post("/", controllers.CreateUnit)
 
-	// GET /api/units/:id -> ambil unit berdasarkan ID
-	unitAPI.Get("/coba", func(c *framework.Ctx) error {
+}
+
+func CobaRoutes(app *framework.RouterGroup) {
+	app.Get("/coba", func(c *framework.Ctx) error {
 		return c.JSON(200, map[string]interface{}{
 			"status":  200,
 			"message": "Coba endpoint hit",
 			"data":    nil,
 		})
 	})
-
 }

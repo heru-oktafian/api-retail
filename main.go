@@ -48,6 +48,10 @@ func main() {
 	// Register routes
 	routes.MasterUnitRoutes(app)
 
+	// Group routes for /coba endpoint
+	cobaGroup := app.Group("/coba")
+	routes.CobaRoutes(cobaGroup)
+
 	// Start listening on the specified port
 	app.Listen(":" + serverPort)
 }
