@@ -138,12 +138,10 @@ func blacklistToken(token string) error {
 // SetBranch mengatur branch dengan peran tertentu
 func SetBranch(c *framework.Ctx) error {
 	// Ambil token dari header Authorization
-	token := c.Get("Authorization")
+	token := c.Request.PostFormValue("Authorization")
 
 	// Hapus prefix "Bearer " jika ada
-	if strings.HasPrefix(token, "Bearer ") {
-		token = token[len("Bearer "):]
-	}
+	token = strings.TrimPrefix(token, "Bearer ")
 
 	// Periksa jika token kosong
 	if token == "" {
