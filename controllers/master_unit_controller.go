@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 	"strings"
@@ -38,6 +39,9 @@ func DeleteUnit(c *framework.Ctx) error {
 // GetUnitByID tampilkan unit berdasarkan id
 func GetUnitByID(c *framework.Ctx) error {
 	id := c.Get("id")
+
+	fmt.Println("ID Unit:", id)
+
 	// Getting unit using helpers
 	return helpers.GetResource(c, config.DB, &models.Unit{}, id)
 }
