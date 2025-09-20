@@ -19,11 +19,11 @@ func SysAuthRoutes(app *framework.Fiber) {
 	auth.Post("/logout", controllers.Logout)
 	auth.Post("/set_branch", middlewares.Protected(JWTSecret), controllers.SetBranch)
 	auth.Get("/profile", middlewares.Protected(JWTSecret), middlewares.AuthorizeRole("administrator", "superadmin"), controllers.GetProfile)
-	// auth.Get("/list_branches", middleware.Protected(), controllers.GetBranchByUserId)
+	auth.Get("/list_branches", middlewares.Protected(JWTSecret), controllers.CmbBranch)
 }
 
 func CmbBranchRoutes(app *framework.Fiber) {
-	app.Get("/api/branches_combo", controllers.CmbBranch)
+	// app.Get("/api/branches_combo", middlewares.Protected(JWTSecret), controllers.CmbBranch)
 }
 
 func SysMenuRoutes(app *framework.Fiber) {
