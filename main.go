@@ -9,6 +9,7 @@ import (
 	config "github.com/heru-oktafian/scafold/config"
 	env "github.com/heru-oktafian/scafold/env"
 	framework "github.com/heru-oktafian/scafold/framework"
+	"github.com/heru-oktafian/scafold/middlewares"
 	utils "github.com/heru-oktafian/scafold/utils"
 )
 
@@ -45,11 +46,12 @@ func main() {
 	// Start the application
 	app := framework.New()
 
-	// Register routes
-	routes.MasterUnitRoutes(app)
+	app.Use(middlewares.CORS())
+	app.Use(middlewares.Logger())
 
-	// Group routes for /coba endpoint
-	routes.CobaRoutes(app)
+	// Routes
+	routes.MasterUnitRoutes(app)
+	// routes.CobaRoutes(app)
 
 	// Start listening on the specified port
 	app.Listen(":" + serverPort)

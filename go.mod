@@ -3,7 +3,7 @@ module github.com/heru-oktafian/api-retail
 go 1.25.1
 
 require (
-	github.com/heru-oktafian/scafold v1.0.11
+	github.com/heru-oktafian/scafold v1.0.12
 	golang.org/x/crypto v0.41.0
 	gorm.io/gorm v1.25.10
 )
