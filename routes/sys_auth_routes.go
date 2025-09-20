@@ -10,8 +10,10 @@ import (
 
 // SysAuthRoutes mengatur rute untuk autentikasi (register dan login)
 func SysAuthRoutes(app *framework.Fiber) {
-	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 	// Load Secret Key from environment
+	JWTSecret := os.Getenv("JWT_SECRET_KEY")
+
+	// Group routes under /api
 	auth := app.Group("/api")
 
 	// auth.Post("/register", controllers.RegisterUser)
@@ -22,14 +24,14 @@ func SysAuthRoutes(app *framework.Fiber) {
 	auth.Get("/list_branches", middlewares.Protected(JWTSecret), controllers.CmbBranch)
 }
 
-func CmbBranchRoutes(app *framework.Fiber) {
-	// app.Get("/api/branches_combo", middlewares.Protected(JWTSecret), controllers.CmbBranch)
-}
-
 func SysMenuRoutes(app *framework.Fiber) {
+	// Load Secret Key from environment
 	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 
-	app.Get("/menus", func(c *framework.Ctx) error {
+	// Group routes under /api
+	menu := app.Group("/menus")
+	// Protected route to get menus, requires authentication and specific roles
+	menu.Get("/", func(c *framework.Ctx) error {
 		if err := middlewares.Protected(JWTSecret)(c); err != nil {
 			return err
 		}
