@@ -20,11 +20,7 @@ func MasterUnitRoutes(app *framework.Fiber) {
 	unitAPI.Get("/", controllers.GetAllUnit)
 
 	// GET /api/units/:id -> ambil unit berdasarkan ID
-	// unitAPI.Get("/:id", controllers.GetUnitByID)
-	unitAPI.Get("/:id", func(ctx *framework.Ctx) error {
-		id := ctx.Param("id") // parser param sudah tersedia di framework
-		return controllers.GetUnitByID(ctx)
-	})
+	unitAPI.Get("/:id", controllers.GetUnitByID, middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator"))
 
 	// POST /api/units -> buat unit baru
 	unitAPI.Post("/", controllers.CreateUnit)
