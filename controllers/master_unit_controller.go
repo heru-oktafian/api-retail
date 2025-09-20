@@ -42,8 +42,9 @@ func GetUnitByID(c *framework.Ctx) error {
 
 	fmt.Println("ID Unit:", id)
 
+	return responses.JSONResponse(c, 200, "Berhasil mengambil data unit", map[string]string{"unit_id": id})
 	// Getting unit using helpers
-	return helpers.GetResource(c, config.DB, &models.Unit{}, id)
+	// return helpers.GetResource(c, config.DB, &models.Unit{}, id)
 }
 
 // GetAllUnit tampilkan semua unit
