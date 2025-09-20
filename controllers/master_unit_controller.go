@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"math"
 	"strconv"
 	"strings"
@@ -38,13 +37,13 @@ func DeleteUnit(c *framework.Ctx) error {
 
 // GetUnitByID tampilkan unit berdasarkan id
 func GetUnitByID(c *framework.Ctx) error {
-	id := c.Get("id")
+	id := c.Param("id")
 
-	fmt.Println("ID Unit:", id)
+	// fmt.Println("ID Unit:", id)
 
-	return responses.JSONResponse(c, 200, "Berhasil mengambil data unit", map[string]string{"unit_id": id})
+	// return responses.JSONResponse(c, 200, "Berhasil mengambil data unit", map[string]string{"unit_id": id})
 	// Getting unit using helpers
-	// return helpers.GetResource(c, config.DB, &models.Unit{}, id)
+	return helpers.GetResource(c, config.DB, &models.Unit{}, id)
 }
 
 // GetAllUnit tampilkan semua unit

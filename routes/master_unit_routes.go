@@ -21,7 +21,8 @@ func MasterUnitRoutes(app *framework.Fiber) {
 
 	// GET /api/units/:id -> ambil unit berdasarkan ID
 	// unitAPI.Get("/:id", controllers.GetUnitByID)
-	unitAPI.Get("/{id}", func(ctx *framework.Ctx) error {
+	unitAPI.Get("/:id", func(ctx *framework.Ctx) error {
+		id := ctx.Param("id") // parser param sudah tersedia di framework
 		return controllers.GetUnitByID(ctx)
 	})
 
