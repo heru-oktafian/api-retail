@@ -29,15 +29,7 @@ func SysMenuRoutes(app *framework.Fiber) {
 	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 
 	// Group routes under /api
-	menu := app.Group("/menus")
+	menu := app.Group("/menus", middlewares.Protected(JWTSecret))
 	// Protected route to get menus, requires authentication and specific roles
-	menu.Get("/", func(c *framework.Ctx) error {
-		if err := middlewares.Protected(JWTSecret)(c); err != nil {
-			return err
-		}
-		if err := middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator")(c); err != nil {
-			return err
-		}
-		return controllers.GetMenus(c)
-	})
+	menu.Get("/", controllers.GetMenus)
 }
