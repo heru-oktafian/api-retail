@@ -55,8 +55,8 @@ func MasterUnitRoutes(app *framework.Fiber) {
 
 }
 
-func CobaRoutes(app *framework.RouterGroup) {
-	app.Get("/coba", func(c *framework.Ctx) error {
+func CobaRoutes(app *framework.Fiber) {
+	app.Group("/coba", func(c *framework.Ctx) error {
 		return c.JSON(200, map[string]interface{}{
 			"status":  200,
 			"message": "Coba endpoint hit",
