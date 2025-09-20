@@ -138,7 +138,7 @@ func blacklistToken(token string) error {
 // SetBranch mengatur branch dengan peran tertentu
 func SetBranch(c *framework.Ctx) error {
 	// Ambil token dari header Authorization
-	token := c.Request.PostFormValue("Authorization")
+	token := c.Get("Authorization")
 
 	// Hapus prefix "Bearer " jika ada
 	token = strings.TrimPrefix(token, "Bearer ")
@@ -236,9 +236,7 @@ func Logout(c *framework.Ctx) error {
 	token := c.Get("Authorization")
 
 	// Remove prefix "Bearer " jika ada
-	if strings.HasPrefix(token, "Bearer ") {
-		token = token[len("Bearer "):]
-	}
+	token = strings.TrimPrefix(token, "Bearer ")
 
 	if token == "" {
 		return responses.JSONResponse(c, 401, "Token tidak ditemukan", "Masukkan token yang valid !")
