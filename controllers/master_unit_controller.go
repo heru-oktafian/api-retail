@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"math"
+	"strconv"
 	"strings"
 
 	"github.com/heru-oktafian/api-retail/models"
@@ -46,20 +47,17 @@ func GetAllUnit(c *framework.Ctx) error {
 	// Ambil ID cabang
 	branch_id, _ := middlewares.GetBranchID(c.Request)
 
-	// Parsing body JSON ke struct
-	var body models.RequestBody
-	if err := c.BodyParser(&body); err != nil {
-		// return responses.JSONResponse(c, framework.StatusBadRequest, "Body permintaan tidak valid", "Gagal mem-parsing body permintaan")
-		return responses.BadRequest(c, "Body permintaan tidak valid", err)
+	// Ambil parameter page dan search dari query URL
+	pageParam := c.Query("page")
+	search := strings.TrimSpace(c.Query("search"))
+
+	// Konversi page ke int, default ke 1 jika tidak valid
+	page := 1
+	if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
+		page = p
 	}
 
-	// Validasi dan set default untuk halaman jika tidak valid
-	page := body.Page
-	if page < 1 {
-		page = 1
-	}
-	limit := 10                              // Tetapkan batas data per halaman ke 10
-	search := strings.TrimSpace(body.Search) // Ambil kata kunci pencarian dari body
+	limit := 10 // Tetapkan batas data per halaman ke 10
 	offset := (page - 1) * limit
 
 	var Unit []models.AllUnit // Gunakan AllUnit untuk mengambil data unit tanpa branch_id
@@ -76,7 +74,6 @@ func GetAllUnit(c *framework.Ctx) error {
 
 	// Hitung total unit yang sesuai dengan filter
 	if err := query.Count(&total).Error; err != nil {
-		// return responses.JSONResponse(c, framework.StatusInternalServerError, "Gagal mengambil data Unit", "Gagal menghitung jumlah Unit")
 		return responses.InternalServerError(c, "Gagal mengambil data Unit", err)
 	}
 
