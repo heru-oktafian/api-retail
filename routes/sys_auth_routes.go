@@ -8,10 +8,9 @@ import (
 	"github.com/heru-oktafian/scafold/middlewares"
 )
 
-var JWTSecret = os.Getenv("JWT_SECRET_KEY")
-
 // SysAuthRoutes mengatur rute untuk autentikasi (register dan login)
 func SysAuthRoutes(app *framework.Fiber) {
+	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 	// Load Secret Key from environment
 	auth := app.Group("/api")
 
@@ -28,6 +27,8 @@ func CmbBranchRoutes(app *framework.Fiber) {
 }
 
 func SysMenuRoutes(app *framework.Fiber) {
+	JWTSecret := os.Getenv("JWT_SECRET_KEY")
+
 	app.Get("/menus", func(c *framework.Ctx) error {
 		if err := middlewares.Protected(JWTSecret)(c); err != nil {
 			return err
