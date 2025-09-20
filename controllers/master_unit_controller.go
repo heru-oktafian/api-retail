@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"math"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -39,9 +40,6 @@ func DeleteUnit(c *framework.Ctx) error {
 func GetUnitByID(c *framework.Ctx) error {
 	id := c.Param("id")
 
-	// fmt.Println("ID Unit:", id)
-
-	// return responses.JSONResponse(c, 200, "Berhasil mengambil data unit", map[string]string{"unit_id": id})
 	// Getting unit using helpers
 	return helpers.GetResource(c, config.DB, &models.Unit{}, id)
 }
@@ -89,7 +87,7 @@ func GetAllUnit(c *framework.Ctx) error {
 	// Hitung total halaman berdasarkan hasil filter
 	totalPages := int(math.Ceil(float64(total) / float64(limit)))
 
-	return responses.JSONResponseGetAll(c, 200, "Data Unit berhasil diambil", search, int(total), page, int(totalPages), int(limit), Unit)
+	return responses.JSONResponseGetAll(c, http.StatusOK, "Data Unit berhasil diambil", search, int(total), page, int(totalPages), int(limit), Unit)
 }
 
 // CmbUnit mendapatkan semua kategori unit
@@ -119,5 +117,5 @@ func CmbUnit(c *framework.Ctx) error {
 		return responses.InternalServerError(c, "Failed to get data", err)
 	}
 
-	return responses.JSONResponse(c, 200, "Data berhasil ditemukan", cmbUnits)
+	return responses.JSONResponse(c, http.StatusOK, "Data berhasil ditemukan", cmbUnits)
 }
