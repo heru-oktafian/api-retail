@@ -51,7 +51,6 @@ func main() {
 
 	// Routes
 	routes.SysAuthRoutes(app)
-	// routes.CmbBranchRoutes(app)
 	routes.SysMenuRoutes(app)
 	routes.MasterUnitRoutes(app)
 	routes.CobaRoutes(app)

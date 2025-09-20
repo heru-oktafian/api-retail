@@ -6,7 +6,6 @@ import (
 	"github.com/heru-oktafian/api-retail/controllers"
 	"github.com/heru-oktafian/scafold/framework"
 	"github.com/heru-oktafian/scafold/middlewares"
-	// "github.com/heru-oktafian/scafold/responses"
 )
 
 // MasterUnitRoutes mengatur rute untuk master unit
