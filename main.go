@@ -54,6 +54,7 @@ func main() {
 	routes.CmbBranchRoutes(app)
 	routes.SysMenuRoutes(app)
 	routes.MasterUnitRoutes(app)
+	routes.CobaRoutes(app)
 
 	// Start listening on the specified port
 	app.Listen(":" + serverPort)
