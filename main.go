@@ -52,6 +52,7 @@ func main() {
 	// Routes
 	routes.SysAuthRoutes(app)
 	routes.SysMenuRoutes(app)
+	routes.MasterProductCategoryRoutes(app)
 	routes.MasterUnitRoutes(app)
 	routes.CobaRoutes(app)
 
