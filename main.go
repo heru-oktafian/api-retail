@@ -65,6 +65,7 @@ func main() {
 	routes.CmbSupplierCategoryRoutes(app)
 	routes.CmbSupplierRoutes(app)
 	routes.CmbUnitRoutes(app)
+	routes.CmbProductCategoryRoutes(app)
 	routes.GetBranchByUserId(app)
 	routes.CobaRoutes(app)
 
