@@ -31,3 +31,12 @@ func MasterUnitRoutes(app *framework.Fiber) {
 	// DELETE /api/unites/:id - Menghapus unit (soft delete)
 	unitAPI.Delete("/:id", controllers.DeleteUnit, middlewares.AuthorizeRole("superadmin", "administrator"))
 }
+
+func CmbUnitRoutes(app *framework.Fiber) {
+	// Load Secret Key from environment
+	JWTSecret := os.Getenv("JWT_SECRET_KEY")
+
+	// Grup rute yang dilindungi JWT
+	cmbUnitAPI := app.Group("/api/units-combo", middlewares.Protected(JWTSecret))
+	cmbUnitAPI.Get("/", controllers.CmbUnit)
+}
