@@ -54,6 +54,9 @@ func main() {
 	routes.SysMenuRoutes(app)
 	routes.MasterProductCategoryRoutes(app)
 	routes.MasterUnitRoutes(app)
+	routes.MasterSupplierCategoryRoutes(app)
+	routes.SysBranchRoutes(app)
+	routes.SysUserBranchRoutes(app)
 	routes.CobaRoutes(app)
 
 	// Start listening on the specified port
