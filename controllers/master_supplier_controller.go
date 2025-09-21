@@ -106,6 +106,7 @@ func CmbSupplierCategory(c *framework.Ctx) error {
 	if err := config.DB.Table("supplier_categories").
 		Select("id AS supplier_category_id, name AS supplier_category_name").
 		Where("branch_id = ?", branch_id).
+		Order("name ASC").
 		Find(&cmbSupplierCategories).Error; err != nil {
 		return responses.JSONResponse(c, http.StatusInternalServerError, "Failed to get data", "Failed to get data")
 	}
@@ -131,6 +132,9 @@ func CmbSupplier(c *framework.Ctx) error {
 	if search != "" {
 		query = query.Where("LOWER(name) LIKE ?", "%"+search+"%")
 	}
+
+	// Urutkan hasil secara ascending berdasarkan name
+	query = query.Order("name ASC")
 
 	if err := query.Find(&cmbSuppliers).Error; err != nil {
 		return responses.JSONResponse(c, http.StatusInternalServerError, "Failed to get data", "Failed to get data")
