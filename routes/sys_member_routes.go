@@ -33,3 +33,12 @@ func CmbMemberCategoryRoutes(app *framework.Fiber) {
 	cmbMemberCategoryAPI := app.Group("/api/member-categories-combo", middlewares.Protected(JWTSecret))
 	cmbMemberCategoryAPI.Get("/", controllers.CmbMemberCategory)
 }
+
+func CmbMemberRoutes(app *framework.Fiber) {
+	// Load Secret Key from environment
+	JWTSecret := os.Getenv("JWT_SECRET_KEY")
+
+	// Rute ini tidak memerlukan autentikasi, sehingga tidak dilindungi oleh middleware.
+	cmbMemberAPI := app.Group("/api/members-combo", middlewares.Protected(JWTSecret))
+	cmbMemberAPI.Get("/", controllers.CmbMember)
+}
