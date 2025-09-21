@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/heru-oktafian/api-retail/models"
 	"github.com/heru-oktafian/scafold/config"
@@ -15,21 +17,19 @@ import (
 
 // GetUsers mengambil semua pengguna dengan paginasi dan pencarian.
 func GetUsers(c *framework.Ctx) error {
-	// Parsing body JSON ke struct
-	var body models.RequestBody
-	if err := c.BodyParser(&body); err != nil {
-		return responses.BadRequest(c, "Format data yang dikirim tidak valid", err)
+
+	// Ambil parameter page dan search dari query URL
+	pageParam := c.Query("page")
+	search := strings.TrimSpace(c.Query("search"))
+
+	// Konversi page ke int, default ke 1 jika tidak valid
+	page := 1
+	if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
+		page = p
 	}
 
-	// Default pagination
-	page := body.Page
-	if page < 1 {
-		page = 1
-	}
-	limit := 10 // Tetapkan limit ke 10 data per halaman
-	offset := (page - 1) * limit
-
-	search := body.Search
+	limit := 10                  // Tetapkan batas data per halaman ke 10
+	offset := (page - 1) * limit // Hitung offset berdasarkan halaman dan limit
 
 	var users []models.User
 	db := config.DB.Model(&models.User{}).Omit("Password")

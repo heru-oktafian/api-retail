@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/heru-oktafian/api-retail/models"
@@ -44,19 +45,17 @@ func GetBranch(c *framework.Ctx) error {
 
 // GetAllBranch is function for get all branch
 func GetAllBranch(c *framework.Ctx) error {
-	// Parsing body JSON ke struct
-	var body models.RequestBody
-	if err := c.BodyParser(&body); err != nil {
-		return responses.JSONResponse(c, http.StatusBadRequest, "Format data yang dikirim tidak valid", "Gagal memproses data permintaan")
+	// Ambil parameter page dan search dari query URL
+	pageParam := c.Query("page")
+	search := strings.TrimSpace(c.Query("search"))
+
+	// Konversi page ke int, default ke 1 jika tidak valid
+	page := 1
+	if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
+		page = p
 	}
 
-	// Validasi dan set default untuk page jika tidak valid
-	page := body.Page
-	if page < 1 {
-		page = 1
-	}
-	limit := 10                              // Tetapkan limit ke 10 data per halaman
-	search := strings.TrimSpace(body.Search) // Ambil search key dari body
+	limit := 10 // Tetapkan limit ke 10 data per halaman
 	offset := (page - 1) * limit
 
 	// Query builder untuk mengambil data branch

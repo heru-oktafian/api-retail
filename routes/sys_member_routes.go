@@ -8,7 +8,7 @@ import (
 	"github.com/heru-oktafian/scafold/middlewares"
 )
 
-func MasterMemberRoutes(app *framework.Fiber) {
+func SysMemberRoutes(app *framework.Fiber) {
 	// Load Secret Key from environment
 	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 

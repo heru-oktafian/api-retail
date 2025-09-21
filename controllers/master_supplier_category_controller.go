@@ -59,8 +59,8 @@ func GetAllSupplierCategory(c *framework.Ctx) error {
 		page = p
 	}
 
-	limit := 10 // Tetapkan limit ke 10 data per halaman
-	offset := (page - 1) * limit
+	limit := 10                  // Tetapkan limit ke 10 data per halaman
+	offset := (page - 1) * limit // Hitung offset untuk pagination
 
 	var SupplierCategory []models.SupplierCategory
 	var total int64

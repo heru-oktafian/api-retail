@@ -3,6 +3,7 @@ package controllers
 import (
 	"math"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/heru-oktafian/api-retail/models"
@@ -45,23 +46,21 @@ func GetMember(c *framework.Ctx) error {
 
 // GetAllMember tampilkan semua Member
 func GetAllMember(c *framework.Ctx) error {
-	// Get branch id
+	// Ambil ID cabang
 	branch_id, _ := middlewares.GetBranchID(c.Request)
 
-	// Parsing body JSON ke struct
-	var body models.RequestBody
-	if err := c.BodyParser(&body); err != nil {
-		return responses.JSONResponse(c, http.StatusBadRequest, "Format data yang dikirim tidak valid", "Failed to parse request body")
+	// Ambil parameter page dan search dari query URL
+	pageParam := c.Query("page")
+	search := strings.TrimSpace(c.Query("search"))
+
+	// Konversi page ke int, default ke 1 jika tidak valid
+	page := 1
+	if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
+		page = p
 	}
 
-	// Validasi dan set default untuk page jika tidak valid
-	page := body.Page
-	if page < 1 {
-		page = 1
-	}
-	limit := 10                              // Tetapkan limit ke 10 data per halaman
-	search := strings.TrimSpace(body.Search) // Ambil search key dari body
-	offset := (page - 1) * limit
+	limit := 10                  // Tetapkan limit ke 10 data per halaman
+	offset := (page - 1) * limit // Hitung offset berdasarkan halaman dan limit
 
 	var Member []models.MemberDetail
 	var total int64
