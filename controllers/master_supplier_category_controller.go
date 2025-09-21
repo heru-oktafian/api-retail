@@ -66,7 +66,9 @@ func GetAllSupplierCategory(c *framework.Ctx) error {
 	var total int64
 
 	// Query dasar
-	query := config.DB.Table("supplier_categories sc").Select("sc.id, sc.name, sc.branch_id").Where("sc.branch_id = ?", branch_id)
+	query := config.DB.Table("supplier_categories sc").
+		Select("sc.id, sc.name, sc.branch_id").
+		Where("sc.branch_id = ?", branch_id)
 
 	// Jika ada search key, tambahkan filter WHERE
 	if search != "" {
@@ -79,8 +81,8 @@ func GetAllSupplierCategory(c *framework.Ctx) error {
 		return responses.JSONResponse(c, http.StatusInternalServerError, "Get data failed", "Failed to count data")
 	}
 
-	// Ambil data dengan pagination
-	if err := query.Offset(offset).Limit(limit).Scan(&SupplierCategory).Error; err != nil {
+	// Ambil data dengan pagination dan urutkan hasil
+	if err := query.Order("sc.name ASC").Offset(offset).Limit(limit).Scan(&SupplierCategory).Error; err != nil {
 		return responses.JSONResponse(c, http.StatusInternalServerError, "Get data failed", "Failed to fetch data")
 	}
 
