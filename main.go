@@ -56,6 +56,8 @@ func main() {
 	routes.SysUserBranchRoutes(app)
 	routes.SysUserRoutes(app)
 	routes.SysMemberCategoryRoutes(app)
+	routes.MasterMemberRoutes(app)
+	routes.CmbMemberCategoryRoutes(app)
 	routes.MasterProductCategoryRoutes(app)
 	routes.MasterSupplierCategoryRoutes(app)
 	routes.MasterUnitRoutes(app)
