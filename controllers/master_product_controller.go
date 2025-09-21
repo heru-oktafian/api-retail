@@ -120,7 +120,7 @@ func CmbProdSale(c *framework.Ctx) error {
 	var cmbProducts []models.ProdSaleCombo
 
 	// ambil data produk untuk combo box transaksi penjualan
-	query := config.DB.Debug().Table("products").
+	query := config.DB.Table("products").
 		Select("products.id as product_id, products.name as product_name, products.sales_price AS price, products.stock, products.unit_id, units.name AS unit_name").
 		Joins("LEFT JOIN units ON units.id = products.unit_id").
 		Where("products.branch_id = ?", branch_id)
