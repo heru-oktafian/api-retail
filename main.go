@@ -61,6 +61,7 @@ func main() {
 	routes.MasterSupplierCategoryRoutes(app)
 	routes.MasterSupplierRoutes(app)
 	routes.MasterUnitRoutes(app)
+	routes.MasterProductRoutes(app)
 	routes.CmbMemberCategoryRoutes(app)
 	routes.CmbSupplierCategoryRoutes(app)
 	routes.CmbSupplierRoutes(app)
