@@ -16,6 +16,7 @@ import (
 
 // CreateProductCategory buat product category
 func CreateProductCategory(c *framework.Ctx) error {
+	// Get branch id
 	branch_id, _ := middlewares.GetBranchID(c.Request)
 	// Creating new ProductCategory using helpers
 	return helpers.CreateResourceInc(c, config.DB, branch_id, &models.ProductCategory{})
