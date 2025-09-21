@@ -111,9 +111,11 @@ func CmbUnit(c *framework.Ctx) error {
 		query = query.Where("LOWER(name) LIKE ?", "%"+search+"%")
 	}
 
+	// Add order by name ascending
+	query = query.Order("name ASC")
+
 	// Execute the query
 	if err := query.Find(&cmbUnits).Error; err != nil {
-		// return responses.JSONResponse(c, framework.StatusInternalServerError, "Failed to get data", "Failed to get data")
 		return responses.InternalServerError(c, "Failed to get data", err)
 	}
 

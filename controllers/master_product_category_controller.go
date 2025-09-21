@@ -110,6 +110,9 @@ func CmbProductCategory(c *framework.Ctx) error {
 		query = query.Where("LOWER(product_categories.name) LIKE ?", "%"+search+"%")
 	}
 
+	// Tambahkan urutan ascending berdasarkan nama
+	query = query.Order("product_categories.name ASC")
+
 	// Eksekusi query
 	if err := query.Find(&categories).Error; err != nil {
 		return responses.JSONResponse(c, http.StatusInternalServerError, "Failed to get data", "Failed to get data")
