@@ -30,6 +30,7 @@ func SysMenuRoutes(app *framework.Fiber) {
 
 	// Group routes under /api
 	menu := app.Group("/menus", middlewares.Protected(JWTSecret))
+
 	// Protected route to get menus, requires authentication and specific roles
 	menu.Get("/", controllers.GetMenus)
 }

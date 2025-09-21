@@ -64,6 +64,7 @@ func main() {
 	routes.CmbMemberCategoryRoutes(app)
 	routes.CmbSupplierCategoryRoutes(app)
 	routes.CmbSupplierRoutes(app)
+	routes.GetBranchByUserId(app)
 	routes.CobaRoutes(app)
 
 	// Start listening on the specified port
