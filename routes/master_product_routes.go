@@ -28,7 +28,7 @@ func CmbProdSaleRoutes(app *framework.Fiber) {
 	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 
 	// Grup rute yang dilindungi JWT
-	cmbProductSaleAPI := app.Group("/api/products/combo", middlewares.Protected(JWTSecret), middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator"))
+	cmbProductSaleAPI := app.Group("/api/sale-products-combo", middlewares.Protected(JWTSecret), middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator"))
 
 	cmbProductSaleAPI.Get("/", controllers.CmbProdSale)
 }
@@ -38,7 +38,7 @@ func CmbProdPurchaseRoutes(app *framework.Fiber) {
 	JWTSecret := os.Getenv("JWT_SECRET_KEY")
 
 	// Grup rute yang dilindungi JWT
-	cmbProductPurchaseAPI := app.Group("/api/products/combo", middlewares.Protected(JWTSecret), middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator"))
+	cmbProductPurchaseAPI := app.Group("/api/purchase-products-combo", middlewares.Protected(JWTSecret), middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator"))
 
 	cmbProductPurchaseAPI.Get("/", controllers.CmbProdPurchase)
 }
