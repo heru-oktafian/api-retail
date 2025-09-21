@@ -63,7 +63,7 @@ func LoginUser(c *framework.Ctx) error {
 	}
 
 	// return utils.SuccessResponse(c, "Login successful", fiber.Map{"token": t})
-	return responses.JSONResponse(c, 200, "Login successful", t)
+	return responses.JSONResponse(c, http.StatusOK, "Login successful", t)
 }
 
 // GenerateBranchJWTWithRole menghasilkan JWT untuk branch dengan peran tertentu
@@ -145,7 +145,7 @@ func SetBranch(c *framework.Ctx) error {
 
 	// Periksa jika token kosong
 	if token == "" {
-		return responses.JSONResponse(c, 401, "Missing token", "Insert valid token to access this endpoint!")
+		return responses.JSONResponse(c, http.StatusUnauthorized, "Missing token", "Insert valid token to access this endpoint!")
 	}
 
 	// Verifikasi token JWT untuk mendapatkan user ID
@@ -155,12 +155,12 @@ func SetBranch(c *framework.Ctx) error {
 	})
 
 	if err != nil || !parsedToken.Valid {
-		return responses.JSONResponse(c, 401, "Invalid token", "Try to login again!")
+		return responses.JSONResponse(c, http.StatusUnauthorized, "Invalid token", "Try to login again!")
 	}
 
 	claims, ok := parsedToken.Claims.(jwt.MapClaims)
 	if !ok || claims["user_id"] == nil {
-		return responses.JSONResponse(c, 401, "Invalid token claims", "Try to login again!")
+		return responses.JSONResponse(c, http.StatusUnauthorized, "Invalid token claims", "Try to login again!")
 	}
 
 	// Ambil user ID dari klaim token
@@ -177,34 +177,34 @@ func SetBranch(c *framework.Ctx) error {
 	// Periksa apakah branch_id valid untuk user ini
 	var userBranch models.UserBranch
 	if err := config.DB.Where("user_id = ? AND branch_id = ?", userID, request.BranchID).First(&userBranch).Error; err != nil {
-		return responses.JSONResponse(c, 403, "Invalid branch ID", "Branch not associated with this user!")
+		return responses.JSONResponse(c, http.StatusForbidden, "Invalid branch ID", "Branch not associated with this user!")
 	}
 
 	// Ambil user_role dari tabel users berdasarkan user_id
 	var user models.User
 	if err := config.DB.Select("name AS name, user_role AS user_role").Where("user_id = ?", userID).First(&user).Error; err != nil {
-		return responses.JSONResponse(c, 500, "Failed to set branch", "Unable to retrieve user role")
+		return responses.JSONResponse(c, http.StatusInternalServerError, "Failed to set branch", "Unable to retrieve user role")
 	}
 
 	// Ambil default_member, quota, dan subscription_type dari branch
 	var branch models.Branch
 	if err := config.DB.Select("default_member, quota, subscription_type").Where("id = ?", request.BranchID).First(&branch).Error; err != nil {
-		return responses.JSONResponse(c, 500, "Failed to set branch", "Unable to retrieve branch details")
+		return responses.JSONResponse(c, http.StatusInternalServerError, "Failed to set branch", "Unable to retrieve branch details")
 	}
 
 	// Buat token JWT baru dengan klaim branch_id dan user_role
 	newToken, err := generateBranchJWTWithRole(userID, request.BranchID, string(user.UserRole), branch.DefaultMember, branch.Quota, string(branch.SubscriptionType), user.Name)
 	if err != nil {
-		return responses.JSONResponse(c, 500, "Failed to set branch", "Failed to generate new token")
+		return responses.JSONResponse(c, http.StatusInternalServerError, "Failed to set branch", "Failed to generate new token")
 	}
 
 	// Tambahkan token lama ke Redis blacklist
 	if err := blacklistToken(token); err != nil {
-		return responses.JSONResponse(c, 500, "Failed to set branch", "Failed to blacklist old token")
+		return responses.JSONResponse(c, http.StatusInternalServerError, "Failed to set branch", "Failed to blacklist old token")
 	}
 
 	// Berikan token baru ke pengguna
-	return responses.JSONResponse(c, 200, "Branch set successfully", newToken)
+	return responses.JSONResponse(c, http.StatusOK, "Branch set successfully", newToken)
 }
 
 func GetProfile(c *framework.Ctx) error {
@@ -223,11 +223,11 @@ func GetProfile(c *framework.Ctx) error {
 		Joins("LEFT JOIN members mbr ON mbr.id = brc.default_member").
 		Where("usrbrc.branch_id = ? AND usrbrc.user_id = ?", branchID, userID).
 		Scan(&profilStruct).Error; err != nil {
-		return responses.JSONResponse(c, 500, "Get userbranches failed", "Failed to fetch user branches with details")
+		return responses.JSONResponse(c, http.StatusInternalServerError, "Get userbranches failed", "Failed to fetch user branches with details")
 	}
 
 	// Mengembalikan response data branch
-	return responses.JSONResponse(c, 200, "Otoritas : "+userRole, profilStruct)
+	return responses.JSONResponse(c, http.StatusOK, "Otoritas : "+userRole, profilStruct)
 }
 
 // Function Logout menangani logout pengguna
@@ -239,15 +239,15 @@ func Logout(c *framework.Ctx) error {
 	token = strings.TrimPrefix(token, "Bearer ")
 
 	if token == "" {
-		return responses.JSONResponse(c, 401, "Token tidak ditemukan", "Masukkan token yang valid !")
+		return responses.JSONResponse(c, http.StatusUnauthorized, "Token tidak ditemukan", "Masukkan token yang valid !")
 	}
 
 	// Blacklist token JWT
 	if err := blacklistToken(token); err != nil {
-		return responses.JSONResponse(c, 500, "Logout failed", "Failed to blacklist token")
+		return responses.JSONResponse(c, http.StatusInternalServerError, "Logout failed", "Failed to blacklist token")
 	}
 
-	return responses.JSONResponse(c, 200, "Logout successful", "Logout successful")
+	return responses.JSONResponse(c, http.StatusOK, "Logout successful", "Logout successful")
 }
 
 // CmbBranch menangani penampilan userbranch
@@ -266,11 +266,11 @@ func CmbBranch(c *framework.Ctx) error {
 		Joins("LEFT JOIN branches ON branches.id = user_branches.branch_id").
 		Where("branches.branch_status = 'active' AND user_branches.user_id = ?", userID).
 		Scan(&userBranchDetails).Error; err != nil {
-		return responses.JSONResponse(c, 500, "Get userbranches failed", "Failed to fetch user branches with details")
+		return responses.JSONResponse(c, http.StatusInternalServerError, "Get userbranches failed", "Failed to fetch user branches with details")
 	}
 
 	// Mengembalikan response data userbranch
-	return responses.JSONResponse(c, 200, "UserBranch found", userBranchDetails)
+	return responses.JSONResponse(c, http.StatusOK, "UserBranch found", userBranchDetails)
 }
 
 // GetMenus handles the request to retrieve menu data with an optional user_role filter.
@@ -299,7 +299,7 @@ func GetMenus(c *framework.Ctx) error {
 
 	if userRoleFilter == "" {
 		// If no user_role filter is provided, return all menus
-		return responses.JSONResponse(c, 200, "Get All Menus Success", menus)
+		return responses.JSONResponse(c, http.StatusOK, "Get All Menus Success", menus)
 	}
 
 	// Filter menus by user_role

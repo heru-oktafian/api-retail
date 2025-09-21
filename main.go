@@ -52,11 +52,11 @@ func main() {
 	// Routes
 	routes.SysAuthRoutes(app)
 	routes.SysMenuRoutes(app)
+	routes.SysBranchRoutes(app)
+	routes.SysUserBranchRoutes(app)
 	routes.MasterProductCategoryRoutes(app)
 	routes.MasterUnitRoutes(app)
 	routes.MasterSupplierCategoryRoutes(app)
-	routes.SysBranchRoutes(app)
-	routes.SysUserBranchRoutes(app)
 	routes.CobaRoutes(app)
 
 	// Start listening on the specified port
