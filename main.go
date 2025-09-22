@@ -63,6 +63,7 @@ func main() {
 	routes.MasterUnitRoutes(app)
 	routes.MasterProductRoutes(app)
 	routes.MasterUnitConversionRoutes(app)
+	routes.TransAnotherIncomeRoutes(app)
 	routes.CmbMemberCategoryRoutes(app)
 	routes.CmbMemberRoutes(app)
 	routes.CmbSupplierCategoryRoutes(app)
