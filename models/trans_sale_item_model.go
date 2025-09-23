@@ -21,3 +21,30 @@ type AllSaleItems struct {
 	UnitName    string `gorm:"type:varchar(255);not null" json:"unit_name" validate:"required"`
 	SubTotal    int    `gorm:"type:int;not null;default:0" json:"sub_total" validate:"required"`
 }
+
+// SaleItemResponse adalah struct khusus untuk data detail penjualan,
+// digunakan untuk item individu dalam list GetSaleWithItems.
+type SaleItemResponse struct {
+	ID             string      `json:"id"`
+	MemberId       string      `json:"member_id"`
+	MemberName     string      `json:"member_name"`
+	SaleDate       string      `json:"sale_date"` // Ini akan menjadi STRING yang diformat
+	TotalSale      int         `json:"total_sale"`
+	Discount       int         `json:"discount"`
+	ProfitEstimate int         `json:"profit_estimate"`
+	Payment        string      `json:"payment"`
+	Items          interface{} `json:"items"` // Items bisa berupa []models.AllSaleItems
+}
+
+// SaleDetailResponse adalah struct khusus untuk data detail penjualan,
+// digunakan untuk item individu dalam list GetAllSales.
+type SaleDetailResponse struct {
+	ID             string `json:"id"`
+	MemberId       string `json:"member_id"`
+	MemberName     string `json:"member_name"`
+	SaleDate       string `json:"sale_date"` // Ini akan menjadi STRING yang diformat
+	TotalSale      int    `json:"total_sale"`
+	Discount       int    `json:"discount"`
+	ProfitEstimate int    `json:"profit_estimate"`
+	Payment        string `json:"payment"`
+}

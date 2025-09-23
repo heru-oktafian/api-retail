@@ -36,3 +36,22 @@ type PurchaseInput struct {
 	UserID        string        `json:"user_id"`
 	// CreatedAt dan UpdatedAt tidak perlu di input dari request
 }
+
+type PurchaseDetailResponse struct {
+	ID            string `json:"id"`
+	SupplierId    string `json:"supplier_id"`
+	SupplierName  string `json:"supplier_name"`
+	PurchaseDate  string `json:"purchase_date"` // Ini akan menjadi STRING yang diformat
+	TotalPurchase int    `json:"total_purchase"`
+	Payment       string `json:"payment"`
+}
+
+type PurchaseDetailWithItemsResponse struct {
+	ID            string      `json:"id"`
+	SupplierId    string      `json:"supplier_id"`
+	SupplierName  string      `json:"supplier_name"`
+	PurchaseDate  string      `json:"purchase_date"` // Ini akan menjadi STRING yang diformat
+	TotalPurchase int         `json:"total_purchase"`
+	Payment       string      `json:"payment"`
+	Items         interface{} `json:"items"`
+}

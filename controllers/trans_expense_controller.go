@@ -4,6 +4,7 @@ import (
 	"errors"
 	"math"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -146,23 +147,30 @@ func DeleteExpense(c *framework.Ctx) error {
 
 // GetAllExpenses tampilkan semua Expense
 func GetAllExpenses(c *framework.Ctx) error {
-	// Get branch id
+	// Hitung waktu sekarang dalam WIB
+	nowWIB := time.Now().In(utils.Location)
+
 	branchID, _ := middlewares.GetBranchID(c.Request)
 
-	// Parsing body JSON ke struct
-	var body models.RequestBody
-	if err := c.BodyParser(&body); err != nil {
-		return responses.BadRequest(c, "Invalid request body", err)
+	// Ambil parameter page dan search dari query URL
+	pageParam := c.Query("page")
+	search := strings.TrimSpace(c.Query("search"))
+
+	// Konversi page ke int, default ke 1 jika tidak valid
+	page := 1
+	if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
+		page = p
 	}
 
-	// Validasi dan set default untuk page jika tidak valid
-	page := body.Page
-	if page < 1 {
-		page = 1
+	limit := 10                  // Tetapkan limit ke 10 data per halaman
+	offset := (page - 1) * limit // Hitung offset berdasarkan halaman dan limit
+
+	month := strings.TrimSpace(c.Query("month"))
+
+	// Jika month kosong, isi dengan bulan ini (format YYYY-MM)
+	if month == "" {
+		month = nowWIB.Format("2006-01")
 	}
-	limit := 10                              // Tetapkan limit ke 10 data per halaman
-	search := strings.TrimSpace(body.Search) // Ambil search key dari body
-	offset := (page - 1) * limit
 
 	var expenses []models.Expenses // Mengganti nama menjadi 'expenses' untuk kejelasan
 	var total int64
@@ -183,8 +191,8 @@ func GetAllExpenses(c *framework.Ctx) error {
 	}
 
 	// Terapkan filter bulan
-	if body.Month != "" {
-		parsedMonth, err := time.Parse("2006-01", body.Month)
+	if month != "" {
+		parsedMonth, err := time.Parse("2006-01", month)
 		if err != nil {
 			return responses.BadRequest(c, "Invalid month format. Month should be in format YYYY-MM", err)
 		}

@@ -79,3 +79,15 @@ type PurchaseItemInput struct {
 	Price       int    `json:"price" validate:"required"`
 	ExpiredDate string `json:"expired_date" validate:"required"` // <--- Diubah menjadi string
 }
+
+type FormatedPurchaseItems struct {
+	ID          string `json:"id"`
+	ProductId   string `json:"product_id"`
+	ProductName string `json:"product_name"`
+	UnitId      string `json:"unit_id"`
+	UnitName    string `json:"unit_name"`
+	Price       int    `json:"price"`
+	Qty         int    `json:"qty"`
+	SubTotal    int    `json:"sub_total"`
+	ExpiredDate string `json:"expired_date"`
+}
