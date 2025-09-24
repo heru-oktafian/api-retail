@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -332,21 +333,19 @@ func DeleteFirstStockItem(c *framework.Ctx) error {
 // Get All FirstStocks tampilkan semua first_stock
 func GetAllFirstStocks(c *framework.Ctx) error {
 	// Get branch id
-	branchID, _ := middlewares.GetBranchID(c.Request)
+	branch_id, _ := middlewares.GetBranchID(c.Request)
 
-	// Parsing body JSON ke struct
-	var body models.RequestBody
-	if err := c.BodyParser(&body); err != nil {
-		return responses.BadRequest(c, "Invalid request body", err)
+	// Ambil parameter page dan search dari query URL
+	pageParam := c.Query("page")
+	search := strings.TrimSpace(c.Query("search"))
+
+	// Konversi page ke int, default ke 1 jika tidak valid
+	page := 1
+	if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
+		page = p
 	}
 
-	// Validasi dan set default untuk page jika tidak valid
-	page := body.Page
-	if page < 1 {
-		page = 1
-	}
-	limit := 10                              // Tetapkan limit ke 10 data per halaman
-	search := strings.TrimSpace(body.Search) // Ambil search key dari body
+	limit := 10 // Tetapkan limit ke 10 data per halaman
 	offset := (page - 1) * limit
 
 	var FirstStocks []models.AllFirstStocks
@@ -355,7 +354,7 @@ func GetAllFirstStocks(c *framework.Ctx) error {
 	// Query dasar
 	query := config.DB.Table("first_stocks pur").
 		Select("pur.id, pur.description, pur.first_stock_date, pur.total_first_stock, pur.payment").
-		Where("pur.branch_id = ?", branchID).
+		Where("pur.branch_id = ?", branch_id).
 		Order("pur.created_at DESC")
 
 	// Jika ada search key, tambahkan filter WHERE
