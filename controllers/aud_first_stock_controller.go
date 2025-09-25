@@ -36,7 +36,6 @@ func CreateFirstStock(c *framework.Ctx) error {
 	// Ambil input dari body
 	var input models.FirstStockInput
 	if err := c.BodyParser(&input); err != nil {
-		// return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
 		return responses.BadRequest(c, "Invalid input", err)
 	}
 
