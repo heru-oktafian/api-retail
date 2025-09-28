@@ -57,6 +57,8 @@ func main() {
 	routes.SysUserRoutes(app)
 	routes.SysMemberCategoryRoutes(app)
 	routes.SysMemberRoutes(app)
+	routes.SysDashboardRoutes(app)
+	routes.SysReportRoutes(app)
 	routes.AuditFirstStockRoutes(app)
 	routes.AuditFirstStockWithItems(app)
 	routes.AuditFirstStockItemRoutes(app)
