@@ -383,12 +383,12 @@ func GetAllFirstStockItems(c *framework.Ctx) error {
 	// Get FirstStock id dari param
 	first_stockID := c.Param("id")
 
-	// Parsing body JSON ke struct
-	var body models.RequestBody
-	if err := c.BodyParser(&body); err != nil {
-		return responses.BadRequest(c, "Invalid request body", err)
+	search := strings.TrimSpace(c.Query("search"))
+
+	// Jika ada search key, tambahkan filter WHERE
+	if search != "" {
+		search = strings.ToLower(search)
 	}
-	search := strings.TrimSpace(body.Search)
 
 	var FirstStockItems []models.AllFirstStockItems
 
