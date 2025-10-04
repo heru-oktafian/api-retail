@@ -78,7 +78,7 @@ func GetAllProduct(c *framework.Ctx) error {
 
 	// Query dasar
 	query := config.DB.Table("products pro").
-		Select("pro.id,pro.sku,pro.name,pro.description, pro.unit_id, un.name AS unit_name,pro.stock,pro.purchase_price,pro.sales_price,pro.alternate_price,pro.expired_date,pc.name AS product_category_name").
+		Select("pro.id,pro.sku,pro.name,pro.description, pro.unit_id, un.name AS unit_name,pro.stock,pro.purchase_price,pro.sales_price,pro.alternate_price,pro.expired_date, pro.product_category_id, pc.name AS product_category_name").
 		Joins("LEFT JOIN product_categories pc ON pc.id = pro.product_category_id").
 		Joins("LEFT JOIN units un ON un.id = pro.unit_id").
 		Where("pro.branch_id = ?", branch_id)
