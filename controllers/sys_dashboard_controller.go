@@ -130,6 +130,7 @@ func DailyProfitReport(c *framework.Ctx) error {
 		Select("report_date, SUM(total_sales) AS total_sales, SUM(profit_estimate) AS profit_estimate").
 		Where("report_date = ? AND branch_id = ?", today, branchID).
 		Group("report_date").
+		Debug().
 		Scan(&summary).Error
 
 	if err != nil {
