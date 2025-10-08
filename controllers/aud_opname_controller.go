@@ -147,7 +147,7 @@ func GetAllOpnames(c *framework.Ctx) error {
 	limit := 10 // Tetapkan limit ke 10 data per halaman
 	offset := (page - 1) * limit
 
-	var Opnames []models.AllOpnames
+	var opnames []models.AllOpnames
 	var total int64
 
 	// Query dasar
@@ -168,20 +168,21 @@ func GetAllOpnames(c *framework.Ctx) error {
 	}
 
 	// Ambil data dengan pagination
-	if err := query.Offset(offset).Limit(limit).Scan(&Opnames).Error; err != nil {
+	if err := query.Offset(offset).Limit(limit).Scan(&opnames).Error; err != nil {
 		return responses.JSONResponse(c, http.StatusInternalServerError, "Pengambilan opname gagal", "Gagal mengambil data stok awal")
 	}
 
 	// Hitung total halaman berdasarkan hasil filter
 	totalPages := int(math.Ceil(float64(total) / float64(limit)))
 
+	// Kembalikan hasil response tanpa nested "data"
 	return responses.JSONResponse(c, http.StatusOK, "Data Opname berhasil diambil", map[string]interface{}{
-		"data":       Opnames,
-		"limit":      int(limit),
+		"limit":      limit,
 		"page":       page,
 		"search":     search,
-		"total":      int(total),
-		"totalPages": int(totalPages),
+		"total":      total,
+		"totalPages": totalPages,
+		"data":       opnames,
 	})
 }
 
