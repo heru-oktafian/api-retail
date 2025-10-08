@@ -53,12 +53,13 @@ func GetUsers(c *framework.Ctx) error {
 		users[i].Password = ""
 	}
 
-	return responses.JSONResponse(c, http.StatusOK, "Data berhasil ditemukan", framework.Map{
+	// Kembalikan hasil response tanpa nested "data"
+	return JSONResponseFlat(c, http.StatusOK, "Data berhasil diambil", map[string]interface{}{
+		"limit":     limit,
+		"page":      page,
 		"search":    search,
 		"total":     int(total),
-		"page":      page,
 		"last_page": int((total + int64(limit) - 1) / int64(limit)),
-		"limit":     limit,
 		"data":      users,
 	})
 }
