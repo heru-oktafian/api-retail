@@ -502,7 +502,7 @@ func GetAllOpnameItems(c *framework.Ctx) error {
 
 	// Query dasar
 	query := config.DB.Table("opname_items pit").
-		Select("pit.id, pit.opname_id, pit.product_id, pro.name AS product_name, TO_CHAR(pit.price, 'FM999G999G999') AS price, pit.qty, pit.qty_exist, TO_CHAR(pit.sub_total, 'FM999G999G999') AS sub_total, TO_CHAR(pit.sub_total_exist, 'FM999G999G999') AS sub_total_exist, pit.expired_date").
+		Select("pit.id, pit.opname_id, pit.product_id, pro.name AS product_name, TO_CHAR(pit.price, 'FM999G999G999') AS price, pit.qty, pit.qty_exist, TO_CHAR(pit.sub_total, 'FM999G999G999') AS sub_total, TO_CHAR(pit.sub_total_exist, 'FM999G999G999') AS sub_total_exist, TO_CHAR(pit.expired_date, 'DD-MM-YYYY') AS expired_date").
 		Joins("LEFT JOIN products pro ON pro.id = pit.product_id").
 		Where("pit.opname_id = ?", opnameID).
 		Order("pro.name ASC")
