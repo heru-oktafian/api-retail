@@ -2,4 +2,6 @@
 *go.sum
 *.log
 *.toml
+*pro-retail
+*api-retail
 !.env_example
