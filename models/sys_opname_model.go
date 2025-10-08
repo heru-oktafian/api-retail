@@ -60,16 +60,16 @@ type AllOpnameItems struct {
 
 // All Opname Items mobile model
 type AllOpnameItemMobiles struct {
-	ID            string    `gorm:"type:varchar(15);primaryKey" json:"id"`
-	OpnameId      string    `gorm:"type:varchar(15);not null" json:"opname_id"`
-	ProductId     string    `gorm:"type:varchar(15);not null" json:"product_id"`
-	ProductName   string    `gorm:"type:varchar(255);not null" json:"product_name"`
-	Price         string    `gorm:"type:varchar(255);not null" json:"price"`
-	Qty           int       `gorm:"type:int;not null;default:0" json:"qty"`
-	QtyExist      int       `gorm:"type:int;not null;default:0" json:"qty_exist"`
-	SubTotal      string    `gorm:"type:varchar(255);not null" json:"sub_total"`
-	SubTotalExist string    `gorm:"type:varchar(255);not null" json:"sub_total_exist"`
-	ExpiredDate   time.Time `gorm:"not null;default:(NOW() + interval '2 year')" json:"expired_date"`
+	ID            string `gorm:"type:varchar(15);primaryKey" json:"id"`
+	OpnameId      string `gorm:"type:varchar(15);not null" json:"opname_id"`
+	ProductId     string `gorm:"type:varchar(15);not null" json:"product_id"`
+	ProductName   string `gorm:"type:varchar(255);not null" json:"product_name"`
+	Price         string `gorm:"type:varchar(255);not null" json:"price"`
+	Qty           int    `gorm:"type:int;not null;default:0" json:"qty"`
+	QtyExist      int    `gorm:"type:int;not null;default:0" json:"qty_exist"`
+	SubTotal      string `gorm:"type:varchar(255);not null" json:"sub_total"`
+	SubTotalExist string `gorm:"type:varchar(255);not null" json:"sub_total_exist"`
+	ExpiredDate   string `gorm:"column:expired_date" json:"expired_date"`
 }
 
 // All Opname Item details model

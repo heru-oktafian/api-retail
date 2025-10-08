@@ -378,7 +378,7 @@ func GetOpnameWithItems(c *framework.Ctx) error {
 	// Ambil item pembelian terkait
 	var items []models.AllOpnameItemMobiles
 	err = db.Table("opname_items pit").
-		Select("pit.id, pit.opname_id, pit.product_id, pro.name AS product_name, pit.price, pit.qty, pit.sub_total, pit.expired_date").
+		Select("pit.id, pit.opname_id, pit.product_id, pro.name AS product_name, pit.price, pit.qty, pit.sub_total, TO_CHAR(pit.expired_date, 'DD-MM-YYYY') AS expired_date").
 		Joins("LEFT JOIN products pro ON pro.id = pit.product_id").
 		Where("pit.opname_id = ?", opnameID).
 		Order("pro.name ASC").
@@ -387,9 +387,6 @@ func GetOpnameWithItems(c *framework.Ctx) error {
 	if err != nil {
 		return responses.JSONResponse(c, http.StatusInternalServerError, "Gagal mendapatkan item Opname", err.Error())
 	}
-
-	// Format tanggal pembelian ke dd-mm-yyyy
-	// formattedDate := opname.OpnameDate.Format("02 January 2006")
 
 	return responses.JSONResponse(c, http.StatusOK, "Opname berhasil diambil", map[string]interface{}{
 		"id":           opnameID,
