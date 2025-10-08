@@ -55,12 +55,12 @@ func GetUsers(c *framework.Ctx) error {
 
 	// Kembalikan hasil response tanpa nested "data"
 	return JSONResponseFlat(c, http.StatusOK, "Data berhasil diambil", map[string]interface{}{
-		"limit":     limit,
-		"page":      page,
-		"search":    search,
-		"total":     int(total),
-		"last_page": int((total + int64(limit) - 1) / int64(limit)),
-		"data":      users,
+		"per_page":     limit,
+		"current_page": page,
+		"search":       search,
+		"total":        int(total),
+		"total_pages":  int((total + int64(limit) - 1) / int64(limit)),
+		"data":         users,
 	})
 }
 

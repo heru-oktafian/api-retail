@@ -203,7 +203,6 @@ func GetUserDetails(c *framework.Ctx) error {
 
 	// Return user + detail branches
 	response := GetUserResponse{
-		Message:        "Data berhasil ditemukan",
 		User:           user,
 		DetailBranches: branchResponses,
 	}

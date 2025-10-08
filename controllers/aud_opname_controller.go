@@ -177,12 +177,12 @@ func GetAllOpnames(c *framework.Ctx) error {
 
 	// Kembalikan hasil response tanpa nested "data"
 	return JSONResponseFlat(c, http.StatusOK, "Data Opname berhasil diambil", map[string]interface{}{
-		"limit":      limit,
-		"page":       page,
-		"search":     search,
-		"total":      total,
-		"totalPages": totalPages,
-		"data":       opnames,
+		"per_page":     limit,
+		"current_page": page,
+		"search":       search,
+		"total":        total,
+		"total_pages":  totalPages,
+		"data":         opnames,
 	})
 }
 
