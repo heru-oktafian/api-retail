@@ -152,7 +152,7 @@ func GetAllOpnames(c *framework.Ctx) error {
 
 	// Query dasar
 	query := config.DB.Table("opnames pur").
-		Select("pur.id, pur.description, TO_CHAR(pur.opname_date, 'DD Month YYYY') AS opname_date, pur.total_opname"). // Modifikasi di sini
+		Select("pur.id, pur.description, TO_CHAR(pur.opname_date, 'DD-MM-YYYY') AS opname_date, pur.total_opname"). // Modifikasi di sini
 		Where("pur.branch_id = ?", branch_id).
 		Order("pur.created_at DESC")
 
