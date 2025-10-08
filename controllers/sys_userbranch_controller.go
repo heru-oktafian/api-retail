@@ -196,7 +196,6 @@ func GetUserDetails(c *framework.Ctx) error {
 
 	// Response format yang diinginkan dari API
 	type GetUserResponse struct {
-		Message        string           `json:"message"`
 		User           models.User      `json:"user"`
 		DetailBranches []BranchResponse `json:"detail_branches"`
 	}
