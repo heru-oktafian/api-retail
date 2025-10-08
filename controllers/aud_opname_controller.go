@@ -152,13 +152,13 @@ func GetAllOpnames(c *framework.Ctx) error {
 
 	// Query dasar
 	query := config.DB.Table("opnames pur").
-		Select("pur.id, pur.description, TO_CHAR(pur.opname_date, 'DD-MM-YYYY') AS opname_date, pur.total_opname"). // Modifikasi di sini
+		Select("pur.id, pur.description, TO_CHAR(pur.opname_date, 'DD-MM-YYYY') AS opname_date, pur.total_opname").
 		Where("pur.branch_id = ?", branch_id).
 		Order("pur.created_at DESC")
 
 	// Jika ada search key, tambahkan filter WHERE
 	if search != "" {
-		search = strings.ToLower(search) // Konversi search ke lowercase
+		search = strings.ToLower(search)
 		query = query.Where("LOWER(pur.description) LIKE ?", "%"+search+"%")
 	}
 
@@ -176,12 +176,12 @@ func GetAllOpnames(c *framework.Ctx) error {
 	totalPages := int(math.Ceil(float64(total) / float64(limit)))
 
 	return responses.JSONResponse(c, http.StatusOK, "Data Opname berhasil diambil", map[string]interface{}{
+		"data":       Opnames,
+		"limit":      int(limit),
+		"page":       page,
 		"search":     search,
 		"total":      int(total),
-		"page":       page,
 		"totalPages": int(totalPages),
-		"limit":      int(limit),
-		"data":       Opnames,
 	})
 }
 
