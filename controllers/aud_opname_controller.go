@@ -176,7 +176,7 @@ func GetAllOpnames(c *framework.Ctx) error {
 	totalPages := int(math.Ceil(float64(total) / float64(limit)))
 
 	// Kembalikan hasil response tanpa nested "data"
-	return responses.JSONResponse(c, http.StatusOK, "Data Opname berhasil diambili", map[string]interface{}{
+	return JSONResponseFlat(c, http.StatusOK, "Data Opname berhasil diambil", map[string]interface{}{
 		"limit":      limit,
 		"page":       page,
 		"search":     search,
@@ -184,6 +184,12 @@ func GetAllOpnames(c *framework.Ctx) error {
 		"totalPages": totalPages,
 		"data":       opnames,
 	})
+}
+
+func JSONResponseFlat(c *framework.Ctx, status int, message string, payload map[string]interface{}) error {
+	payload["status"] = "success"
+	payload["message"] = message
+	return c.JSON(status, payload)
 }
 
 // CreateOpname Function
