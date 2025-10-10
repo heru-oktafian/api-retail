@@ -30,7 +30,7 @@ Proyek ini dikembangkan menggunakan teknologi-teknologi utama berikut:
 * [![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
 * **GORM:** ORM Golang yang luar biasa untuk interaksi database.
 * **JWT (JSON Web Tokens):** Digunakan untuk autentikasi dan otorisasi API.
-* **[Nama Framework/Helper Internal Anda]:** Kumpulan *helper* dan *utility* khusus untuk mempercepat pengembangan.
+* **Scafold/Internal Framework:** Kumpulan *helper* dan *utility* khusus untuk mempercepat pengembangan.
 
 ---
 
@@ -106,11 +106,10 @@ Semua *endpoint* yang aman memerlukan token **Bearer JWT** di *header*.
 
 ## 🛣️ Roadmap (Rencana Pengembangan)
 
-* [Fitur 1 yang akan datang]
-* [Fitur 2 yang akan datang]
-* [Perbaikan/Optimasi performa di area X]
-
-Lihat [Open Issues] untuk daftar lengkap fitur yang diusulkan (dan masalah yang diketahui).
+* Penambahan Laporan Stock Opaname.
+* Penambahan Laporan Aset.
+* Penambahan Fitur Penandaan Pembayaran Tagihan.
+* Optimasi pencarian produk dengan sistem caching yang lebih baik.
 
 ---
 

@@ -1,11 +1,16 @@
 package controllers
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
 	"math"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/heru-oktafian/api-retail/models"
 	"github.com/heru-oktafian/scafold/config"
 	"github.com/heru-oktafian/scafold/framework"
@@ -13,6 +18,11 @@ import (
 	"github.com/heru-oktafian/scafold/middlewares"
 	"github.com/heru-oktafian/scafold/responses"
 )
+
+// Redis client instance (should be initialized in your app, here for example)
+var redisClient *redis.Client = redis.NewClient(&redis.Options{
+	Addr: "localhost:6379", // adjust as needed
+})
 
 // CreateProduct buat Product
 func CreateProduct(c *framework.Ctx) error {
@@ -106,37 +116,80 @@ func GetAllProduct(c *framework.Ctx) error {
 	totalPages := int(math.Ceil(float64(total) / float64(limit)))
 
 	return responses.JSONResponseGetAll(c, http.StatusOK, "Products retrieved successfully", search, int(total), page, int(totalPages), int(limit), AllProduct)
+
+}
+
+// SetTemporaryProductCache menyimpan daftar produk sementara ke Redis dengan branch_id sebagai pembeda
+func SetTemporaryProductCache(branchID string, products []models.ProdSaleCombo) error {
+	ctx := context.Background()
+	key := fmt.Sprintf("tmp:products:sale:%s", branchID)
+	data, err := json.Marshal(products)
+	if err != nil {
+		return err
+	}
+	// Set dengan TTL 30 menit
+	return redisClient.Set(ctx, key, data, 30*time.Minute).Err()
+}
+
+// GetTemporaryProductCache mengambil daftar produk sementara dari Redis berdasarkan branch_id
+func GetTemporaryProductCache(branchID string) ([]models.ProdSaleCombo, error) {
+	ctx := context.Background()
+	key := fmt.Sprintf("tmp:products:sale:%s", branchID)
+	val, err := redisClient.Get(ctx, key).Result()
+	if err == redis.Nil {
+		return nil, nil // Tidak ada data cache
+	}
+	if err != nil {
+		return nil, err
+	}
+	var products []models.ProdSaleCombo
+	if err := json.Unmarshal([]byte(val), &products); err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
+// DeleteTemporaryProductCache menghapus cache produk sementara dari Redis berdasarkan branch_id
+func DeleteTemporaryProductCache(branchID string) error {
+	ctx := context.Background()
+	key := fmt.Sprintf("tmp:products:sale:%s", branchID)
+	return redisClient.Del(ctx, key).Err()
 }
 
 // CmbProdSale mengembalikan daftar produk untuk combo box transaksi penjualan
 func CmbProdSale(c *framework.Ctx) error {
-	// get branch id
 	branch_id, _ := middlewares.GetBranchID(c.Request)
+	search := strings.TrimSpace(c.Query("search"))
 
-	// Ambil search key dari query parameter
-	search := strings.TrimSpace(c.Query("search")) // Default to empty string if not provided
+	// Cek cache Redis terlebih dahulu
+	cached, err := GetTemporaryProductCache(fmt.Sprintf("%v", branch_id))
+	if err == nil && cached != nil && search == "" {
+		return responses.JSONResponse(c, http.StatusOK, "Combo Products retrieved successfully (from cache)", cached)
+	}
 
-	// deklarasi variabel untuk combo box produk transaksi penjualan
 	var cmbProducts []models.ProdSaleCombo
 
-	// ambil data produk untuk combo box transaksi penjualan
 	query := config.DB.Table("products").
-		Select("products.id as product_id, products.name as product_name, products.sales_price AS price, products.stock, products.unit_id, units.name AS unit_name").
+		Select("products.id as product_id, products.name as product_name, sales_price AS price, products.stock, products.unit_id, units.name AS unit_name").
 		Joins("LEFT JOIN units ON units.id = products.unit_id").
 		Where("products.branch_id = ?", branch_id)
 
-	// Jika search tidak kosong, tambahkan kondisi LIKE
 	if search != "" {
 		search = strings.ToLower(search)
 		query = query.Where("LOWER(products.name) LIKE ? OR LOWER(products.description) LIKE ?", "%"+search+"%", "%"+search+"%")
 	}
 
-	// Tambahkan sorting ascending berdasarkan products.name
 	query = query.Order("products.name ASC")
 
 	if err := query.Scan(&cmbProducts).Error; err != nil {
 		return responses.JSONResponse(c, http.StatusInternalServerError, "Get Combo Products failed", err)
 	}
+
+	// Simpan ke cache jika tanpa search
+	if search == "" {
+		_ = SetTemporaryProductCache(fmt.Sprintf("%v", branch_id), cmbProducts)
+	}
+
 	return responses.JSONResponse(c, http.StatusOK, "Combo Products retrieved successfully", cmbProducts)
 }
 
