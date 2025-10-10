@@ -1,24 +1,23 @@
-# [Nama Proyek Anda] 🚀
+# ViRetail 🚀
 
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2F[username Anda]%2F[nama repo Anda]&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false)](https://hits.seeyoufarm.com)
-[![Golang](https://img.shields.io/badge/Golang-1.21%2B-blue.svg)](https://golang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
+[![Golang](https://img.shields.io/badge/Golang-1.25%2B-blue.svg)](https://golang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <br />
 <div align="center">
   <h3 align="center">ViRetail</h3>
 
   <p align="center">
-    [Deskripsi singkat dan menarik tentang proyek ini. Misalnya: "Layanan RESTful API performa tinggi untuk sistem manajemen retail, dioptimalkan dengan caching Redis dan autentikasi JWT."]
+    Layanan RESTful API performa tinggi untuk sistem manajemen retail, dioptimalkan dengan caching Redis dan autentikasi JWT.
     <br />
     <a href="https://viretail.apidog.io"><strong>Lihat Dokumentasi API »</strong></a>
     <br />
     <br />
-    <a href="[Link untuk melihat demo, jika ada]">Lihat Demo</a>
     ·
     <a href="[Link ke Issue Tracker]">Laporkan Bug</a>
     ·
     <a href="[Link ke Kontribusi Proyek]">Minta Fitur</a>
+    .
   </p>
 </div>
 
