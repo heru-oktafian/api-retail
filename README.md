@@ -130,7 +130,7 @@ Jika Anda memiliki saran yang akan membuat ini lebih baik, silakan *fork* repo d
 
 ## 📄 Lisensi (License)
 
-Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE.txt` untuk informasi lebih lanjut.
+Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanjut.
 
 ---
 
