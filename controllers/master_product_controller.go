@@ -188,6 +188,13 @@ func CmbProdSale(c *framework.Ctx) error {
 	// Simpan ke cache jika tanpa search
 	if search == "" {
 		_ = SetTemporaryProductCache(fmt.Sprintf("%v", branch_id), cmbProducts)
+		// Log data yang disimpan ke Redis
+		data, err := json.Marshal(cmbProducts)
+		if err == nil {
+			fmt.Printf("Temporary product cache saved for branch_id %v: %s\n", branch_id, string(data))
+		} else {
+			fmt.Printf("Failed to marshal product cache for branch_id %v: %v\n", branch_id, err)
+		}
 	}
 
 	return responses.JSONResponse(c, http.StatusOK, "Combo Products retrieved successfully", cmbProducts)
