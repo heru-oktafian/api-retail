@@ -2,6 +2,8 @@
 
 [![Golang](https://img.shields.io/badge/Golang-1.25%2B-blue.svg)](https://golang.org/)
 <a href="https://www.postgresql.org/"><img alt="Static Badge" src="https://img.shields.io/badge/PostgreSQL-17.4-yellow"></a>
+<a href="https://www.redis.io"><img alt="Static Badge" src="https://img.shields.io/badge/Redis-7.4%2B-red">
+</a>
 <hr />
 <div align="center">
     Layanan RESTful API performa tinggi untuk sistem manajemen retail, dioptimalkan dengan caching Redis dan autentikasi JWT.
@@ -42,7 +44,7 @@ Bagian ini memandu Anda untuk menyiapkan dan menjalankan proyek di lingkungan lo
 
 Pastikan Anda telah menginstal yang berikut ini:
 
-* **Golang** (Versi 1.21 atau lebih tinggi)
+* **Golang** (Versi 1.25 atau lebih tinggi)
 * **PostgreSQL** (Database)
 * **Redis** (Server Caching/Session)
 * **Git**
@@ -95,10 +97,10 @@ Semua *endpoint* yang aman memerlukan token **Bearer JWT** di *header*.
 
 | Kategori | Deskripsi |
 | :--- | :--- |
-| `/api/v1/auth` | Pendaftaran & *Login* Pengguna. |
-| `/api/v1/products` | Manajemen Inventaris & Produk. |
-| `/api/v1/orders` | Pembuatan & Pelacakan Pesanan. |
-| `/api/v1/users` | Pengelolaan Data Pengguna. |
+| `/api/auth` | Pendaftaran & *Login* Pengguna. |
+| `/api/products` | Manajemen Inventaris & Produk. |
+| `/api/sales` | Pembuatan & Pelacakan Pesanan. |
+| `/api/users` | Pengelolaan Data Pengguna. |
 
 **Lihat dokumentasi lengkap di [viretail.apidog.io](https://viretail.apidog.io)**
 
@@ -129,7 +131,9 @@ Jika Anda memiliki saran yang akan membuat ini lebih baik, silakan *fork* repo d
 
 ## 📄 Lisensi (License)
 
-Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE` untuk informasi lebih lanjut.
+Karya ini (termasuk semua kode dan konten di repositori ini) dilindungi oleh hak cipta. Penggunaan, penyalinan, atau modifikasi dalam bentuk apa pun dilarang tanpa izin tertulis dari saya.
+
+Untuk meminta izin, silakan hubungi saya di heru@heruoktafian.com.
 
 ---
 
