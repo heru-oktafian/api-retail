@@ -1,7 +1,7 @@
 # ViRetail 🚀
 
 [![Golang](https://img.shields.io/badge/Golang-1.25%2B-blue.svg)](https://golang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<img alt="Static Badge" src="https://img.shields.io/badge/PostgreSQL-17.4-yellow">
 <hr />
 <div align="center">
     Layanan RESTful API performa tinggi untuk sistem manajemen retail, dioptimalkan dengan caching Redis dan autentikasi JWT.
