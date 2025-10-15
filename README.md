@@ -5,7 +5,7 @@
 [![Redis](https://img.shields.io/badge/Redis-7.4%2B-red)](https://www.redis.io)
 [![JWT](https://img.shields.io/badge/TokenJWT-v5.3%2B-purple)](https://www.jwt.io/)
 
----
+<br />
 <div align="center">
     Layanan RESTful API performa tinggi untuk sistem manajemen retail, dioptimalkan dengan caching Redis dan autentikasi JWT.
     <br />
