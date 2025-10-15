@@ -1,7 +1,7 @@
 # ViRetail 🚀
 
 [![Golang](https://img.shields.io/badge/Golang-1.25%2B-blue.svg)](https://golang.org/)
-[![Postgres] (https://img.shields.io/badge/PostgreSQL-17.4-yellow)] (https://www.postgresql.org/)
+[![Postgres](https://img.shields.io/badge/PostgreSQL-17.4-yellow)](https://www.postgresql.org/)
 <a href="https://www.postgresql.org/"><img alt="Static Badge" src="https://img.shields.io/badge/PostgreSQL-17.4-yellow"></a>
 <a href="https://www.redis.io"><img alt="Static Badge" src="https://img.shields.io/badge/Redis-7.4%2B-red"></a>
 <a href="https://www.jwt.io"><img alt="Static Badge" src="https://img.shields.io/badge/TokenJWT-v5.3%2B-purple">
