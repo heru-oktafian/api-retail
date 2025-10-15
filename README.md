@@ -4,7 +4,6 @@
 [![Postgres](https://img.shields.io/badge/PostgreSQL-17.4-yellow)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-7.4%2B-red)](https://www.redis.io)
 [![JWT](https://img.shields.io/badge/TokenJWT-v5.3%2B-purple)](https://www.jwt.io/)
-
 ##
 
 <div align="center">
