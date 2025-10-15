@@ -41,6 +41,7 @@ func CreateAnotherIncome(c *framework.Ctx) error {
 	layout := "2006-01-02" // format harus YYYY-MM-DD
 	parsedDate, err := time.Parse(layout, input.IncomeDate)
 	description := input.Description
+	payment := input.Payment
 	total := input.TotalIncome
 	if err != nil {
 		return responses.BadRequest(c, "Invalid date format. Use YYYY-MM-DD", err)
@@ -54,6 +55,7 @@ func CreateAnotherIncome(c *framework.Ctx) error {
 		UserID:      userID,
 		IncomeDate:  parsedDate,
 		TotalIncome: total,
+		Payment:     models.PaymentStatus(payment),
 		CreatedAt:   nowWIB,
 		UpdatedAt:   nowWIB,
 	}
