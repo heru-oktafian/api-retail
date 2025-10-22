@@ -98,5 +98,5 @@ func main() {
 	routes.CobaRoutes(app)
 
 	// Start listening on the specified port
-	app.Listen(":" + serverPort)
+	app.Listen(":"+serverPort, os.Getenv("APPNAME"))
 }
