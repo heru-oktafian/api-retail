@@ -4,4 +4,5 @@
 *.toml
 *pro-retail
 *api-retail
+*go.mod
 !.env_example

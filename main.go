@@ -47,7 +47,7 @@ func main() {
 	app := framework.New()
 
 	app.Use(middlewares.CORS())
-	app.Use(middlewares.Logger())
+	// app.Use(middlewares.Logger())
 
 	// Routes
 	routes.SysAuthRoutes(app)
