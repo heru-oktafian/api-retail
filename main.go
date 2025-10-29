@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	routes "github.com/heru-oktafian/api-retail/routes"
-	"github.com/heru-oktafian/api-retail/scheduler"
+	scheduler "github.com/heru-oktafian/api-retail/scheduler"
 	config "github.com/heru-oktafian/scafold/config"
 	env "github.com/heru-oktafian/scafold/env"
 	framework "github.com/heru-oktafian/scafold/framework"
