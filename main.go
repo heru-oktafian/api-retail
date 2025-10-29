@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	routes "github.com/heru-oktafian/api-retail/routes"
+	"github.com/heru-oktafian/api-retail/scheduler"
 	config "github.com/heru-oktafian/scafold/config"
 	env "github.com/heru-oktafian/scafold/env"
 	framework "github.com/heru-oktafian/scafold/framework"
@@ -39,6 +40,8 @@ func main() {
 
 	// Default to DB 0 if REDIS_DB is not set or invalid
 	config.KoneksiRedis(os.Getenv("REDIS_ADDR"), os.Getenv("REDIS_PASSWORD"), redisDB)
+
+	go scheduler.InitScheduler()
 
 	// Get port from environment
 	serverPort := os.Getenv("PORT")
