@@ -75,7 +75,7 @@ func AssetCounter(db *gorm.DB) error {
 
 	// Menyimpan aset harian untuk setiap cabang
 	for _, asset := range branchAssets {
-		dailyAsset := models.SysDaylyAsset{
+		dailyAsset := models.DaylyAsset{
 			ID: helpers.GenerateID("AST"), // Generate ID otomatis menggunakan helper dengan prefix AST untuk Asset
 			//AssetDate:  time.Now(),                // Timestamp saat ini
 			AssetValue: asset.TotalAsset, // Nilai aset yang telah dihitung

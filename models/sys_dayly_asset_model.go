@@ -3,7 +3,7 @@ package models
 import "time"
 
 // SysDaylyAsset model yang akan disimpan di database
-type SysDaylyAsset struct {
+type DaylyAsset struct {
 	ID         string    `gorm:"type:varchar(15);primaryKey" json:"id" validate:"required"`
 	AssetDate  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"asset_date"`
 	AssetValue int       `gorm:"type:int;not null;default:0" json:"asset_value" validate:"required"`
