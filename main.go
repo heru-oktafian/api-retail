@@ -5,6 +5,7 @@ import (
 	os "os"
 	"strconv"
 
+	models "github.com/heru-oktafian/api-retail/models"
 	routes "github.com/heru-oktafian/api-retail/routes"
 	scheduler "github.com/heru-oktafian/api-retail/scheduler"
 	config "github.com/heru-oktafian/scafold/config"
@@ -29,6 +30,48 @@ func main() {
 
 	// Initialize database connection
 	config.KoneksiPG(os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
+
+	// Migrasi model dengan pengecekan tabel yang sudah ada
+	for _, model := range []interface{}{
+		&models.AnotherIncomes{},
+		&models.BalanceReport{},
+		&models.Branch{},
+		&models.BuyReturnItems{},
+		&models.BuyReturns{},
+		&models.DailyProfitReport{},
+		&models.DaylyAsset{},
+		&models.Expenses{},
+		&models.FirstStockItems{},
+		&models.FirstStocks{},
+		&models.MemberCategory{},
+		&models.Member{},
+		&models.OpnameItems{},
+		&models.Opnames{},
+		&models.ProductCategory{},
+		&models.Product{},
+		&models.PurchaseItems{},
+		&models.Purchases{},
+		&models.SaleItems{},
+		&models.Sales{},
+		&models.SupplierCategory{},
+		&models.Supplier{},
+		&models.TransactionReports{},
+		&models.UnitConversion{},
+		&models.Unit{},
+		&models.UserBranch{},
+		&models.User{},
+	} {
+		// Cek apakah tabel sudah ada
+		if !config.DB.Migrator().HasTable(model) {
+			log.Printf("Membuat tabel untuk model %T...", model)
+			if err := config.DB.AutoMigrate(model); err != nil {
+				log.Fatalf("Gagal migrasi model %T: %v", model, err)
+			}
+			log.Printf("Tabel untuk model %T berhasil dibuat", model)
+		} else {
+			log.Printf("Tabel untuk model %T sudah ada, melanjutkan ke model berikutnya", model)
+		}
+	}
 
 	// Initialize Redis connection
 	redisDB := 0

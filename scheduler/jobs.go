@@ -49,7 +49,7 @@ func DeactivateExpiredPromos() {
 	log.Println("Promo kadaluarsa dinonaktifkan")
 }
 
-// AssetCounter menghitung dan menyimpan nilai aset harian berdasarkan stok dan harga beli produk
+// AssetCounter menghitung dan menyimpan nilai aset harian berdasarkan stok, harga beli produk, dan mengurangi total pembelian kredit
 func AssetCounter(db *gorm.DB) error {
 	// SQL query untuk menghitung nilai aset per cabang
 	query := `
@@ -73,13 +73,45 @@ func AssetCounter(db *gorm.DB) error {
 		return err
 	}
 
+	// Query untuk total pembelian kredit per cabang
+	creditQuery := `
+		SELECT 
+			branch_id,
+			COALESCE(SUM(total_purchase), 0) as total_credit
+		FROM 
+			purchases
+		WHERE 
+			payment_status = 'paid_by_credit'
+		GROUP BY 
+			branch_id
+	`
+
+	type BranchCredit struct {
+		BranchID    string
+		TotalCredit int
+	}
+
+	var branchCredits []BranchCredit
+	if err := db.Raw(creditQuery).Scan(&branchCredits).Error; err != nil {
+		log.Printf("[ASSET COUNTER] Error querying branch credits: %v", err)
+		return err
+	}
+
+	// Buat map untuk lookup total kredit per branch
+	creditMap := make(map[string]int)
+	for _, credit := range branchCredits {
+		creditMap[credit.BranchID] = credit.TotalCredit
+	}
+
 	// Menyimpan aset harian untuk setiap cabang
 	for _, asset := range branchAssets {
+		credit := creditMap[asset.BranchID]
+		finalAsset := asset.TotalAsset - credit
+
 		dailyAsset := models.DaylyAsset{
-			ID: helpers.GenerateID("AST"), // Generate ID otomatis menggunakan helper dengan prefix AST untuk Asset
-			//AssetDate:  time.Now(),                // Timestamp saat ini
-			AssetValue: asset.TotalAsset, // Nilai aset yang telah dihitung
-			BranchId:   asset.BranchID,   // ID cabang dari hasil pengelompokan
+			ID:         helpers.GenerateID("AST"),
+			AssetValue: finalAsset,
+			BranchId:   asset.BranchID,
 		}
 
 		if err := db.Create(&dailyAsset).Error; err != nil {
