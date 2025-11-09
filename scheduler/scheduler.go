@@ -21,7 +21,7 @@ func InitScheduler(db *gorm.DB) *cron.Cron {
 	// })
 
 	// 2. Hitung asset value & simpan dalam tabel sys_dayly_asset setiap pukul 21:35 WIB (UTC-7 → 15:35 UTC kemarin)
-	c.AddFunc("25 16 * * *", func() {
+	c.AddFunc("37 16 * * *", func() {
 		err := AssetCounter(db) // Ganti 'nil' dengan instance *gorm.DB Anda
 		if err != nil {
 			log.Println("[SCHEDULER] Gagal menghitung asset:", err)
