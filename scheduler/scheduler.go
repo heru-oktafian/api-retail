@@ -5,10 +5,11 @@ import (
 	"time"
 
 	"github.com/robfig/cron/v3"
+	"gorm.io/gorm"
 )
 
 // InitScheduler mulaiin semua job terjadwal
-func InitScheduler() *cron.Cron {
+func InitScheduler(db *gorm.DB) *cron.Cron {
 	c := cron.New(cron.WithLocation(time.UTC)) // Akan kita konversi ke WIB
 
 	// === CONTOH JOB ===
@@ -19,19 +20,30 @@ func InitScheduler() *cron.Cron {
 		BackupDatabase()
 	})
 
-	// 2. Generate laporan harian pukul 06:00 WIB (23:00 UTC)
+	// 2. Hitung asset value & simpan dalam tabel sys_dayly_asset setiap pukul 21:00 WIB (UTC+7 → 04:00 UTC kemarin)
+	c.AddFunc("0 4 * * *", func() {
+		// log.Println("[SCHEDULER] Hitung asset...")
+		err := AssetCounter(db) // Ganti 'nil' dengan instance *gorm.DB Anda
+		if err != nil {
+			log.Println("[SCHEDULER] Gagal menghitung asset:", err)
+		} else {
+			log.Println("[SCHEDULER] Asset berhasil dihitung dan disimpan.")
+		}
+	})
+
+	// 3. Generate laporan harian pukul 06:00 WIB (23:00 UTC)
 	c.AddFunc("0 23 * * *", func() {
 		log.Println("[SCHEDULER] Generate laporan harian...")
 		GenerateDailyReport()
 	})
 
-	// 3. Reset cache Redis setiap pukul 00:00 WIB
+	// 4. Reset cache Redis setiap pukul 00:00 WIB
 	c.AddFunc("0 17 * * *", func() { // 17:00 UTC = 00:00 WIB
 		log.Println("[SCHEDULER] Clearing Redis cache...")
 		ClearRedisCache()
 	})
 
-	// 4. Cek expired promo tiap 10 menit
+	// 5. Cek expired promo tiap 10 menit
 	c.AddFunc("*/10 * * * *", func() {
 		log.Println("[SCHEDULER] Cek promo kadaluarsa...")
 		DeactivateExpiredPromos()
