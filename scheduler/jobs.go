@@ -81,7 +81,7 @@ func AssetCounter(db *gorm.DB) error {
 		FROM 
 			purchases
 		WHERE 
-			payment_status = 'paid_by_credit'
+			payment = 'paid_by_credit'
 		GROUP BY 
 			branch_id
 	`
