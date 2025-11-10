@@ -39,7 +39,7 @@ func main() {
 		&models.BuyReturnItems{},
 		&models.BuyReturns{},
 		&models.DailyProfitReport{},
-		&models.DaylyAsset{},
+		&models.DailyAsset{},
 		&models.Expenses{},
 		&models.FirstStockItems{},
 		&models.FirstStocks{},
@@ -106,6 +106,7 @@ func main() {
 	routes.SysMemberRoutes(app)
 	routes.SysDashboardRoutes(app)
 	routes.SysReportRoutes(app)
+	routes.DailyAssetRoutes(app)
 	routes.AuditFirstStockRoutes(app)
 	routes.AuditFirstStockWithItems(app)
 	routes.AuditFirstStockItemRoutes(app)

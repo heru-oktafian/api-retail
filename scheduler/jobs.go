@@ -108,7 +108,7 @@ func AssetCounter(db *gorm.DB) error {
 		credit := creditMap[asset.BranchID]
 		finalAsset := asset.TotalAsset - credit
 
-		dailyAsset := models.DaylyAsset{
+		dailyAsset := models.DailyAsset{
 			ID:         helpers.GenerateID("AST"),
 			AssetValue: finalAsset,
 			BranchId:   asset.BranchID,
