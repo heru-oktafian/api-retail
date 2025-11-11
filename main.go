@@ -125,6 +125,7 @@ func main() {
 	routes.TransPurchaseRoutes(app)
 	routes.TransPurchaseItemRoutes(app)
 	routes.TransSaleRoutes(app)
+	routes.TransSaleDetailRoutes(app)
 	routes.TransSaleItemRoutes(app)
 	routes.TransBuyReturnRoutes(app)
 	routes.TransSaleReturnRoutes(app)

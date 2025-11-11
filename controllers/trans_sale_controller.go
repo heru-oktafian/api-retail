@@ -662,6 +662,120 @@ func GetAllSales(c *framework.Ctx) error {
 	)
 }
 
+// GetAllSalesDetail menampilkan sales dengan kolom description yang
+// berisi daftar nama item (dipisah koma) diikuti dengan sale_date (DD-MM-YYYY HH:MM)
+// di mana waktu ditambah 7 jam sesuai permintaan.
+func GetAllSalesDetail(c *framework.Ctx) error {
+	// Hitung waktu sekarang dalam WIB
+	nowWIB := time.Now().In(utils.Location)
+
+	branchID, _ := middlewares.GetBranchID(c.Request)
+
+	// Ambil parameter page dan search dari query URL
+	pageParam := c.Query("page")
+	search := strings.TrimSpace(c.Query("search"))
+
+	// Konversi page ke int, default ke 1 jika tidak valid
+	page := 1
+	if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
+		page = p
+	}
+
+	limit := 10
+	offset := (page - 1) * limit
+
+	month := strings.TrimSpace(c.Query("month"))
+	if month == "" {
+		month = nowWIB.Format("2006-01")
+	}
+
+	// Struct sementara untuk menampung hasil query
+	type saleSummary struct {
+		ID        string
+		TotalSale int
+		Payment   string
+		SaleDate  time.Time
+	}
+
+	var salesFromDB []saleSummary
+	var total int64
+
+	query := config.DB.Table("sales sl").
+		Select("sl.id, sl.total_sale, sl.payment, sl.sale_date").
+		Joins("LEFT JOIN members mbr on mbr.id = sl.member_id").
+		Where("sl.branch_id = ? AND sl.total_sale > 0", branchID).
+		Order("sl.created_at DESC")
+
+	if search != "" {
+		s := strings.ToLower(search)
+		query = query.Where("LOWER(mbr.name) LIKE ?", "%"+s+"%")
+	}
+
+	if month != "" {
+		parsedMonth, err := time.Parse("2006-01", month)
+		if err != nil {
+			return responses.BadRequest(c, "Invalid month format. Month should be in format YYYY-MM", err)
+		}
+		startDate := parsedMonth
+		endDate := startDate.AddDate(0, 1, 0).Add(-time.Nanosecond)
+		query = query.Where("sl.sale_date BETWEEN ? AND ?", startDate, endDate)
+	}
+
+	if err := query.Count(&total).Error; err != nil {
+		return responses.InternalServerError(c, "Get sale failed", err)
+	}
+
+	if err := query.Offset(offset).Limit(limit).Scan(&salesFromDB).Error; err != nil {
+		return responses.InternalServerError(c, "Get sales failed", err)
+	}
+
+	// Bentuk response dengan description
+	var formatted []map[string]interface{}
+	for _, s := range salesFromDB {
+		// Ambil nama item untuk sale ini
+		var itemNames []string
+		if err := config.DB.Table("sale_items sit").
+			Select("pro.name").
+			Joins("LEFT JOIN products pro ON pro.id = sit.product_id").
+			Where("sit.sale_id = ?", s.ID).
+			Order("pro.name ASC").
+			Pluck("pro.name", &itemNames).Error; err != nil {
+			return responses.InternalServerError(c, "Failed to get sale items", err)
+		}
+
+		// Gabungkan nama item, lalu tambahkan tanggal yang ditambah 7 jam
+		descItems := strings.Join(itemNames, ", ")
+		dateWith7 := s.SaleDate.Add(7 * time.Hour).Format("02-01-2006 15:04")
+		var description string
+		if descItems != "" {
+			description = descItems + " | " + dateWith7
+		} else {
+			description = dateWith7
+		}
+
+		formatted = append(formatted, map[string]interface{}{
+			"id":          s.ID,
+			"total_sale":  s.TotalSale,
+			"payment":     s.Payment,
+			"description": description,
+		})
+	}
+
+	totalPages := int(math.Ceil(float64(total) / float64(limit)))
+
+	return responses.JSONResponseGetAll(
+		c,
+		http.StatusOK,
+		"Sales retrieved successfully",
+		search,
+		int(total),
+		page,
+		totalPages,
+		limit,
+		formatted,
+	)
+}
+
 // GetAllSaleItems tampilkan semua item berdasarkan sale_id tanpa pagination
 func GetAllSaleItems(c *framework.Ctx) error {
 	// Get sale id dari param

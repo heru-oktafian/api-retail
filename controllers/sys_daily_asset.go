@@ -45,7 +45,7 @@ func GetAllAssets(c *framework.Ctx) error {
 	var total int64
 
 	query := config.DB.Table("daily_assets ast").
-		Select("ast.id, ast.asset_date, ast.asset_value, bc.branch_name").
+		Select("ast.id, ast.asset_date, ast.asset_value, ast.branch_id, bc.branch_name").
 		Joins("LEFT JOIN branches bc on bc.id = ast.branch_id").
 		Where("ast.branch_id = ? ", branchID).
 		Order("ast.asset_date DESC")

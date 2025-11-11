@@ -51,3 +51,15 @@ func TransSaleItemRoutes(app *framework.Fiber) {
 	// DELETE /api/sale-items/:id - Menghapus item penjualan (soft delete)
 	transSaleItemAPI.Delete("/:id", controllers.DeleteSaleItem)
 }
+
+// TransSaleDetailRoutes mengatur rute untuk resource transaksi penjualan dengan detail item di dalamnya
+func TransSaleDetailRoutes(app *framework.Fiber) {
+	// Load Secret Key from environment
+	JWTSecret := os.Getenv("JWT_SECRET_KEY")
+
+	// Grup rute yang DILINDUNGI dengan JWT dan ROLE Authorization
+	transSaleDetailAPI := app.Group("/api/sales-details", middlewares.Protected(JWTSecret), middlewares.AuthorizeRole("operator", "cashier", "finance", "superadmin", "administrator"))
+
+	// GET /api/sales - Mengambil semua transaksi penjualan
+	transSaleDetailAPI.Get("/", controllers.GetAllSalesDetail)
+}
