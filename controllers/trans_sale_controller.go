@@ -748,7 +748,7 @@ func GetAllSalesDetail(c *framework.Ctx) error {
 		dateWith7 := s.SaleDate.Add(7 * time.Hour).Format("02-01-2006 15:04")
 		var description string
 		if descItems != "" {
-			description = descItems + " | " + dateWith7
+			description = descItems + " ; " + dateWith7
 		} else {
 			description = dateWith7
 		}
