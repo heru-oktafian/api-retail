@@ -207,6 +207,13 @@
                     "access":"get_by_month"
                 },
                 {
+                    "group_menu": "Laporan",
+                    "title":"Laporan Aset",
+                    "url":"/api/daily_asset",
+                    "method":"GET",
+                    "access":"get_by_month"
+                },
+                {
                     "group_menu": "Membership",
                     "title":"Kategori Member",
                     "url":"/api/member-categories",
@@ -457,6 +464,13 @@
                     "group_menu": "Laporan",
                     "title":"Neraca Saldo",
                     "url":"/api/reports/neraca-saldo",
+                    "method":"GET",
+                    "access":"get_by_month"
+                },
+                {
+                    "group_menu": "Laporan",
+                    "title":"Laporan Aset",
+                    "url":"/api/daily_asset",
                     "method":"GET",
                     "access":"get_by_month"
                 },
@@ -715,6 +729,13 @@
                     "access":"get_by_month"
                 },
                 {
+                    "group_menu": "Laporan",
+                    "title":"Laporan Aset",
+                    "url":"/api/daily_asset",
+                    "method":"GET",
+                    "access":"get_by_month"
+                },
+                {
                     "group_menu": "Membership",
                     "title":"Kategori Member",
                     "url":"/api/member-categories",
@@ -885,6 +906,13 @@
                     "access":"get_by_month"
                 },
                 {
+                    "group_menu": "Laporan",
+                    "title":"Laporan Aset",
+                    "url":"/api/daily_asset",
+                    "method":"GET",
+                    "access":"get_by_month"
+                },
+                {
                     "group_menu": "Membership",
                     "title":"Members",
                     "url":"/api/members",
@@ -1027,6 +1055,13 @@
                     "group_menu": "Laporan",
                     "title":"Neraca Saldo",
                     "url":"/api/reports/neraca-saldo",
+                    "method":"GET",
+                    "access":"get_by_month"
+                },
+                {
+                    "group_menu": "Laporan",
+                    "title":"Laporan Aset",
+                    "url":"/api/daily_asset",
                     "method":"GET",
                     "access":"get_by_month"
                 },
