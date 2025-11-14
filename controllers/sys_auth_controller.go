@@ -51,8 +51,8 @@ func LoginUser(c *framework.Ctx) error {
 	// Buat token JWT
 	claims := jwt.MapClaims{
 		"user_id":   user.UserID,
-		"user_role": user.UserRole,                           // Tambahkan role ke claims JWT
-		"exp":       time.Now().Add(time.Minute * 10).Unix(), // Token berlaku 10 menit
+		"user_role": user.UserRole,                        // Tambahkan role ke claims JWT
+		"exp":       time.Now().Add(time.Hour * 8).Unix(), // Token berlaku 8 jam
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
