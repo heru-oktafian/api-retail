@@ -96,7 +96,7 @@ func GetNeracaSaldo(c *framework.Ctx) error {
 		}
 
 		switch s.TransactionType {
-		case string(models.Sale), string(models.Income):
+		case string(models.Sale), string(models.Income), string(models.BuyReturn):
 			debit = append(debit, entry)
 			totalDebit += s.Total
 		case string(models.Purchase), string(models.Expense), string(models.SaleReturn):
