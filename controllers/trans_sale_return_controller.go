@@ -184,7 +184,7 @@ func CreateSaleReturnTransaction(c *framework.Ctx) error {
 	transactionReportID := helpers.GenerateID("TRX")
 	transactionReport := models.TransactionReports{
 		ID:              transactionReportID,
-		TransactionType: models.BuyReturn,
+		TransactionType: models.SaleReturn,
 		UserID:          userID,
 		BranchID:        branchID,
 		Total:           saleReturn.TotalReturn,
